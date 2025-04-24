@@ -22,9 +22,23 @@
   "dependencies": {
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
+    "@nestjs/cqrs": "^11.0.3",
+    "@nestjs/event-emitter": "^3.0.1",
     "@nestjs/platform-fastify": "^11.0.20",
+    "@nestjs/swagger": "^11.1.4",
+    "@nestjs/typeorm": "^11.0.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "dayjs": "^1.11.13",
+    "dotenv": "^16.5.0",
+    "env-var": "^7.5.0",
+    "mysql2": "^3.14.0",
+    "nestjs-request-context": "^4.0.0",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "typeorm": "^0.3.22",
+    "typeorm-transactional-cls-hooked": "^0.1.21",
+    "zod": "^3.24.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",

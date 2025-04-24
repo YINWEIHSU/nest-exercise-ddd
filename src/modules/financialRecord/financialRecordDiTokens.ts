@@ -1,0 +1,9 @@
+// Tokens used for Dependency Injection
+
+export const FINANCIAL_RECORD_REPOSITORY = Symbol(
+  'FINANCIAL_RECORD_REPOSITORY',
+);
+
+export const FINANCIAL_RECORD_QUERY_REPOSITORY = Symbol(
+  'FINANCIAL_RECORD_QUERY_REPOSITORY',
+);

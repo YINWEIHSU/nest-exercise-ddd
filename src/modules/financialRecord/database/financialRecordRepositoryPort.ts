@@ -1,0 +1,17 @@
+import { PaginatedQueryParams, RepositoryPort } from '@libs/ddd';
+import { FinancialRecordEntity } from '../domain/financialRecordEntity';
+
+export interface FindFinancialRecordsParams extends PaginatedQueryParams {
+  readonly startDate: string;
+  readonly endDate: string;
+  readonly queryWord?: string;
+  readonly applicationFormId?: string;
+  readonly mainAccountId?: string;
+  readonly subAccountId?: string;
+  readonly subsidiaryId?: string;
+  readonly hasUniformInvoice?: string;
+}
+
+export interface FinancialRecordRepositoryPort
+  extends RepositoryPort<FinancialRecordEntity> {
+}
