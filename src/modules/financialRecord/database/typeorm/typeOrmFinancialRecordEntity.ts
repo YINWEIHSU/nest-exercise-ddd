@@ -44,7 +44,6 @@ export class TypeOrmFinancialRecordEntity {
         return formattedDate;
       },
       from: (value: Date | null) => {
-        console.log(value);
         if (!value) return null;
         const formattedDate = dayjs(value).format('YYYY-MM-DD');
         return formattedDate;

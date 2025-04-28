@@ -35,10 +35,7 @@ export abstract class RepositoryBase<
   // async findAllPaginated(
   //   params: PaginatedQueryParams,
   // ): Promise<Paginated<Aggregate>> {
-  //   const [entities, count] = await this.repository.findAndCount({
-  //     skip: params.offset,
-  //     take: params.limit,
-  //   });
+  //   const [entities, count] = await this.repository.findAndCount();
 
   //   const domainEntities = entities.map((entity) =>
   //     this.mapper.toDomain(entity),

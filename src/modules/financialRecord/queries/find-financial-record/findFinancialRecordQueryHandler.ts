@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
 import { QueryBase } from '@libs/ddd/query.base';
 import { TypeOrmFinancialRecordEntity } from '../../database/typeorm/typeOrmFinancialRecordEntity';
-import { TypeOrmUserRepositoryQueryAdapter } from '../../database/financialRecordQueryRepository';
+import { TypeOrmFinancialRecordRepositoryQueryAdapter } from '../../database/financialRecordQueryRepository';
 import { FINANCIAL_RECORD_QUERY_REPOSITORY } from '../../financialRecordDiTokens';
 import { Nullable } from '@libs/types';
 
@@ -25,7 +25,7 @@ export class FindFinancialRecordQueryHandler
 {
   constructor(
     @Inject(FINANCIAL_RECORD_QUERY_REPOSITORY)
-    private readonly repository: TypeOrmUserRepositoryQueryAdapter,
+    private readonly repository: TypeOrmFinancialRecordRepositoryQueryAdapter,
   ) {}
 
   /**

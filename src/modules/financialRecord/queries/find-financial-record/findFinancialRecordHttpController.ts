@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Query, Param } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
 import { routesV1 } from '@src/config/appRoutes';
 import { QueryBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';

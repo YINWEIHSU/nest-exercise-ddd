@@ -19,6 +19,7 @@ export type PaginatedQueryParams = {
   currentPage: number;
   sortBy: string;
   order: 'asc' | 'desc';
+  filters?: Partial<string>;
 };
 
 export interface RepositoryPort<Entity> {

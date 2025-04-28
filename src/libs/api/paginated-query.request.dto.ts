@@ -13,7 +13,7 @@ export class PaginatedQueryRequestDto {
     description: 'Specifies a limit of returned records',
     required: false,
   })
-  readonly limit?: number;
+  readonly itemCounts?: number;
 
   @IsOptional()
   @IsInt()
@@ -21,5 +21,5 @@ export class PaginatedQueryRequestDto {
   @Max(99999)
   @Type(() => Number)
   @ApiProperty({ example: 0, description: 'Page number', required: false })
-  readonly page?: number;
+  readonly currentPage?: number;
 }

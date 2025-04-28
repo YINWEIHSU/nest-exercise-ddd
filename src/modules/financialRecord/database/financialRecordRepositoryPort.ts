@@ -12,6 +12,18 @@ export interface FindFinancialRecordsParams extends PaginatedQueryParams {
   readonly hasUniformInvoice?: string;
 }
 
+export interface FinancialRecordSearchCondition {
+  ids?: number[];
+  startDate?: string;
+  endDate?: string;
+  queryWord?: string;
+  applicationFormId?: number;
+  mainAccountId?: number;
+  subAccountId?: number;
+  subsidiaryId?: number;
+  hasUniformInvoice?: boolean;
+}
+
 export interface FinancialRecordRepositoryPort
   extends RepositoryPort<FinancialRecordEntity> {
 }

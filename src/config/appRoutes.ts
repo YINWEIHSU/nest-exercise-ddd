@@ -14,5 +14,6 @@ export const routesV1 = {
   financialRecord: {
     root: financialRecordRoot,
     getOne: `${financialRecordRoot}/:id`,
+    getList: `${financialRecordRoot}`,
   },
 };
