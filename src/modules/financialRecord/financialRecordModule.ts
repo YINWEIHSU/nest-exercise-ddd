@@ -1,7 +1,7 @@
 import { Logger, Module, Provider } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmFinancialRecordEntity } from './database/typeorm/typeOrmFinancialRecordEntity';
-import { TypeOrmUserRepositoryAdapter } from './database/financialRecordRepository';
+import { TypeOrmFinancialRecordRepositoryAdapter } from './database/financialRecordRepository';
 import { TypeOrmFinancialRecordRepositoryQueryAdapter } from './database/financialRecordQueryRepository';
 // import { CreateFinancialRecordHttpController } from './commands/create-user/createFinancialRecordHttpController';
 // import { DeleteFinancialRecordHttpController } from './commands/delete-user/delete-user.http-controller';
@@ -17,16 +17,18 @@ import {
   FINANCIAL_RECORD_QUERY_REPOSITORY,
 } from './financialRecordDiTokens';
 import { FindFinancialRecordsHttpController } from './queries/find-financial-records/findFinancialRecordsHttpController';
+import { CreateFinancialRecordHttpController } from './commands/create-financial-record/createFinancialRecordHttpController';
+import { CreateFinancialRecordService } from './commands/create-financial-record/createFinancialRecordService';
 
 const httpControllers = [
-  // CreateFinancialRecordHttpController,
+  CreateFinancialRecordHttpController,
   // DeleteFinancialRecordHttpController,
   FindFinancialRecordHttpController,
   FindFinancialRecordsHttpController,
 ];
 
 const commandHandlers: Provider[] = [
-  // CreateFinancialRecordService,
+  CreateFinancialRecordService,
   // DeleteFinancialRecordService,
 ];
 
@@ -40,7 +42,7 @@ const mappers: Provider[] = [FinancialRecordMapper];
 const repositories: Provider[] = [
   {
     provide: FINANCIAL_RECORD_REPOSITORY,
-    useClass: TypeOrmUserRepositoryAdapter,
+    useClass: TypeOrmFinancialRecordRepositoryAdapter,
   },
   {
     provide: FINANCIAL_RECORD_QUERY_REPOSITORY,
@@ -61,5 +63,8 @@ const repositories: Provider[] = [
     ...queryHandlers,
     ...mappers,
   ],
+  exports: [
+    ...repositories,
+  ]
 })
 export class FinancialRecordModule {}

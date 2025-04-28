@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { RequestContextModule } from 'nestjs-request-context';
 import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
@@ -22,6 +23,7 @@ import { FinancialRecordModule } from './modules/financialRecord/financialRecord
     }),
     CqrsModule,
     EventEmitterModule.forRoot(),
+    RequestContextModule,
     FinancialRecordModule,
   ],
   controllers: [AppController],

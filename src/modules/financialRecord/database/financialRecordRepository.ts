@@ -10,7 +10,7 @@ import { DataSource } from 'typeorm';
 import { RepositoryBase } from '@libs/db/sqlRepositoryBase';
 
 @Injectable()
-export class TypeOrmUserRepositoryAdapter
+export class TypeOrmFinancialRecordRepositoryAdapter
   extends RepositoryBase<FinancialRecordEntity, TypeOrmFinancialRecordEntity>
   implements FinancialRecordRepositoryPort
 {
@@ -24,7 +24,7 @@ export class TypeOrmUserRepositoryAdapter
       dataSource,
       mapper,
       eventEmitter,
-      new Logger(TypeOrmUserRepositoryAdapter.name),
+      new Logger(TypeOrmFinancialRecordRepositoryAdapter.name),
     );
   }
   public async findOneById(
@@ -32,5 +32,9 @@ export class TypeOrmUserRepositoryAdapter
   ): Promise<Nullable<FinancialRecordEntity>> {
     const entity = await this.repository.findOneById(id);
     return entity ? this.mapper.toDomain(entity) : null;
+  }
+
+  protected getEntityTarget(): new () => TypeOrmFinancialRecordEntity {
+    return TypeOrmFinancialRecordEntity;
   }
 }

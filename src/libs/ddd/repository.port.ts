@@ -1,4 +1,6 @@
 import { Nullable } from '@libs/types';
+// 這會讓 port 與 typeorm 產生依賴，但考量應該不太會更換套件，先不要搞得太複雜
+import { EntityManager } from 'typeorm';
 
 export class Paginated<T> {
   readonly count: number;
@@ -26,7 +28,9 @@ export interface RepositoryPort<Entity> {
   // insert(entity: Entity | Entity[]): Promise<void>;
   findOneById(id: string): Promise<Nullable<Entity>>;
   findAll(): Promise<Entity[]>;
+  save(entity: Entity, entityManager?: EntityManager): Promise<number>;
   // findAllPaginated(params: PaginatedQueryParams): Promise<Paginated<Entity>>;
-
-  // transaction<T>(handler: () => Promise<T>): Promise<T>;
+  transaction<T>(
+    handler: (entityManager: EntityManager) => Promise<T>,
+  ): Promise<T>;
 }

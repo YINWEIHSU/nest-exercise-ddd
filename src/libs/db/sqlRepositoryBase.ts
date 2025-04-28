@@ -4,7 +4,13 @@ import { Mapper } from '@libs/ddd';
 import { RepositoryPort } from '@libs/ddd';
 import { ConflictException } from '@libs/exceptions';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { QueryRunner, Repository, DataSource, QueryFailedError } from 'typeorm';
+import {
+  QueryRunner,
+  Repository,
+  DataSource,
+  QueryFailedError,
+  EntityManager,
+} from 'typeorm';
 import { LoggerPort } from '../ports/logger.port';
 import { ObjectLiteral } from '../types';
 
@@ -14,6 +20,7 @@ export abstract class RepositoryBase<
 > implements RepositoryPort<Aggregate>
 {
   protected abstract repository: RepositoryPort<Aggregate>;
+  protected abstract getEntityTarget(): new () => DbModel;
 
   protected constructor(
     private readonly dataSource: DataSource,
@@ -30,6 +37,58 @@ export abstract class RepositoryBase<
   async findAll(): Promise<Aggregate[]> {
     const entities = await this.repository.findAll();
     return entities.map((entity) => this.mapper.toDomain(entity));
+  }
+
+  async save(entity: Aggregate, entityManager?: EntityManager): Promise<number> {
+    const record = this.mapper.toPersistence(entity);
+    if (!this.isIdExist(record.id)) {
+      delete record.id;
+    }
+    let result: DbModel;
+    if (entityManager) {
+      const repository = entityManager.getRepository<DbModel>(
+        this.getEntityTarget(),
+      );
+      result = await repository.save(record);
+    } else {
+      const typeormRepository = this
+        .repository as unknown as Repository<DbModel>;
+      result = await typeormRepository.save(record);
+    }
+    await entity.publishEvents(this.logger, this.eventEmitter);
+    return result.id as number;
+  }
+
+  async transaction<T>(
+    callback: (transactionalEntityManager: EntityManager) => Promise<T>,
+  ): Promise<T> {
+    try {
+      return await this.dataSource.transaction<T>(
+        async (transactionalEntityManager) => {
+          return await callback(transactionalEntityManager);
+        },
+      );
+    } catch (error) {
+      if (error instanceof QueryFailedError) {
+        this.logger.error('Database transaction failed', { error });
+
+        if (
+          error.message.includes('duplicate') ||
+          error.message.includes('unique constraint')
+        ) {
+          throw new ConflictException('資料已存在');
+        }
+      }
+      throw error;
+    }
+  }
+
+  protected isIdExist(id: any): boolean {
+    return !(
+      id === undefined ||
+      id === null ||
+      (typeof id === 'number' && isNaN(id))
+    );
   }
 
   // async findAllPaginated(

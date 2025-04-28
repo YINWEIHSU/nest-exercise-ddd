@@ -40,7 +40,7 @@ export class TypeOrmFinancialRecordEntity {
     transformer: {
       to: (value: string | null) => {
         if (!value) return null;
-        const formattedDate = dayjs(value).format();
+        const formattedDate = dayjs(value).format('YYYY-MM-DD');
         return formattedDate;
       },
       from: (value: Date | null) => {

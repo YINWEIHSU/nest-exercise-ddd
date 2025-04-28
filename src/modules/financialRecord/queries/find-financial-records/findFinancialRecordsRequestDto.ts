@@ -4,7 +4,7 @@ import {
   IsString,
   Matches,
   IsOptional,
-  IsBoolean,
+  IsBooleanString,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { PaginatedQueryRequestDto } from '@src/libs/api/paginated-query.request.dto';
@@ -78,7 +78,7 @@ export class PaginatedFinancialRecordsRequestDto extends PaginatedQueryRequestDt
     required: false,
   })
   @IsOptional()
-  @IsBoolean()
+  @IsBooleanString()
   @Transform(({ value }) => {
     if (value === 'true') return true;
     if (value === 'false') return false;
