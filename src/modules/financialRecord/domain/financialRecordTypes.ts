@@ -3,7 +3,6 @@ import { Voucher } from './value-objects/voucherValueObject';
 import { Invoice } from './value-objects/invoiceValueObject';
 import { TransactionType } from '@src/libs/enums/transactionTypeEnums';
 
-// All properties that a User has
 export interface FinancialRecordProps {
   subsidiaryId: string;
   transactionType: TransactionType;
@@ -19,7 +18,6 @@ export interface FinancialRecordProps {
   creatorId: string;
 }
 
-// Properties that are needed for a user creation
 export interface CreateFinancialRecordProps {
   subsidiaryId: string;
   subAccountId: string;

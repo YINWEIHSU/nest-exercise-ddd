@@ -19,6 +19,7 @@ import {
 import { FindFinancialRecordsHttpController } from './queries/find-financial-records/findFinancialRecordsHttpController';
 import { CreateFinancialRecordHttpController } from './commands/create-financial-record/createFinancialRecordHttpController';
 import { CreateFinancialRecordService } from './commands/create-financial-record/createFinancialRecordService';
+import { FinancialRecordIsUpdatedEventHandler } from './application/event-handlers/FinancialRecordIsUpdatedEventHandler';
 
 const httpControllers = [
   CreateFinancialRecordHttpController,
@@ -36,6 +37,10 @@ const queryHandlers: Provider[] = [
   FindFinancialRecordQueryHandler,
   FindFinancialRecordsQueryHandler,
 ];
+
+const eventHandlers: Provider[] = [
+  FinancialRecordIsUpdatedEventHandler,
+]
 
 const mappers: Provider[] = [FinancialRecordMapper];
 
@@ -62,9 +67,8 @@ const repositories: Provider[] = [
     ...commandHandlers,
     ...queryHandlers,
     ...mappers,
+    ...eventHandlers,
   ],
-  exports: [
-    ...repositories,
-  ]
+  exports: [...repositories],
 })
 export class FinancialRecordModule {}

@@ -26,4 +26,11 @@ export interface FinancialRecordSearchCondition {
 
 export interface FinancialRecordRepositoryPort
   extends RepositoryPort<FinancialRecordEntity> {
+  logChanges(
+    financialRecordId: number,
+    userId: number,
+    oldValues: object,
+    newValues: object,
+    changeReason: string,
+  ): Promise<void>;
 }
