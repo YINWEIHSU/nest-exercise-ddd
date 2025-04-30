@@ -19,6 +19,7 @@ export interface FinancialRecordProps {
 }
 
 export interface CreateFinancialRecordProps {
+  id?: string;
   subsidiaryId: string;
   subAccountId: string;
   counterpartyId: string;

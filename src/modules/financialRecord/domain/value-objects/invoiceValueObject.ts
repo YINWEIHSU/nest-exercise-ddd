@@ -11,21 +11,21 @@ import {
  * */
 
 export interface InvoiceProps {
-  invoiceNumber: string;
-  uniformInvoiceNumber: string;
-  invoiceDate: string;
+  invoiceNumber?: string;
+  uniformInvoiceNumber?: string;
+  invoiceDate?: string;
 }
 
 export class Invoice extends ValueObject<InvoiceProps> {
-  get invoiceNumber(): string {
+  get invoiceNumber(): string | undefined {
     return this.props.invoiceNumber;
   }
 
-  get uniformInvoiceNumber(): string {
+  get uniformInvoiceNumber(): string | undefined {
     return this.props.uniformInvoiceNumber;
   }
 
-  get invoiceDate(): string {
+  get invoiceDate(): string | undefined {
     return this.props.invoiceDate;
   }
 
@@ -37,13 +37,13 @@ export class Invoice extends ValueObject<InvoiceProps> {
    * a request) sacrificing some security for performance and convenience.
    */
   protected validate(props: InvoiceProps): void {
-    if (!Guard.lengthIsBetween(props.invoiceNumber, 2, 15)) {
+    if (props.invoiceNumber && !Guard.lengthIsBetween(props.invoiceNumber, 2, 15)) {
       throw new ArgumentOutOfRangeException('country is out of range');
     }
-    if (!Guard.lengthIsBetween(props.uniformInvoiceNumber, 2, 15)) {
+    if (props.uniformInvoiceNumber && !Guard.lengthIsBetween(props.uniformInvoiceNumber, 2, 15)) {
       throw new ArgumentOutOfRangeException('street is out of range');
     }
-    if (!Guard.isDateFormat(props.invoiceDate)) {
+    if (props.invoiceDate && !Guard.isDateFormat(props.invoiceDate)) {
       throw new ArgumentInvalidException('postalCode is out of range');
     }
   }

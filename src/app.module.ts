@@ -8,6 +8,7 @@ import { AppService } from './app.service';
 import { databaseConfig } from './config/databaseConfig';
 import { TypeOrmFinancialRecordEntity } from './modules/financialRecord/database/typeorm/typeOrmFinancialRecordEntity';
 import { FinancialRecordModule } from './modules/financialRecord/financialRecordModule';
+import { TypeOrmFinancialRecordLogEntity } from './modules/financialRecord/database/typeorm/typeOrmFinancialRecordLogEntity';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { FinancialRecordModule } from './modules/financialRecord/financialRecord
       username: databaseConfig.username,
       password: databaseConfig.password,
       database: databaseConfig.database,
-      entities: [TypeOrmFinancialRecordEntity],
+      entities: [TypeOrmFinancialRecordEntity, TypeOrmFinancialRecordLogEntity],
       synchronize: true,
     }),
     CqrsModule,

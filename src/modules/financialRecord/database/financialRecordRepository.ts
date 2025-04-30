@@ -3,8 +3,6 @@ import { FinancialRecordRepositoryPort } from '@modules/financialRecord/database
 import { TypeOrmFinancialRecordEntity } from './typeorm/typeOrmFinancialRecordEntity';
 import { TypeOrmFinancialRecordLogEntity } from './typeorm/typeOrmFinancialRecordLogEntity';
 import { FinancialRecordEntity } from '@modules/financialRecord/domain/financialRecordEntity';
-import { Nullable } from '@libs/types';
-import { RepositoryPort } from '@libs/ddd';
 import { FinancialRecordMapper } from '@modules/financialRecord/financialRecordMapper';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { DataSource, Repository } from 'typeorm';
@@ -15,7 +13,7 @@ export class TypeOrmFinancialRecordRepositoryAdapter
   extends RepositoryBase<FinancialRecordEntity, TypeOrmFinancialRecordEntity>
   implements FinancialRecordRepositoryPort
 {
-  protected repository: RepositoryPort<FinancialRecordEntity>;
+  private typeormRepository: Repository<TypeOrmFinancialRecordEntity>;
   private logRepository: Repository<TypeOrmFinancialRecordLogEntity>;
 
   constructor(
@@ -29,12 +27,22 @@ export class TypeOrmFinancialRecordRepositoryAdapter
       eventEmitter,
       new Logger(TypeOrmFinancialRecordRepositoryAdapter.name),
     );
+
+    this.typeormRepository = dataSource.getRepository(
+      TypeOrmFinancialRecordEntity,
+    );
+    this.logRepository = dataSource.getRepository(
+      TypeOrmFinancialRecordLogEntity,
+    );
   }
-  public async findOneById(
-    id: string,
-  ): Promise<Nullable<FinancialRecordEntity>> {
-    const entity = await this.repository.findOneById(id);
-    return entity ? this.mapper.toDomain(entity) : null;
+
+  // 實現抽象方法以提供 TypeORM Repository
+  protected getRepository(): Repository<TypeOrmFinancialRecordEntity> {
+    return this.typeormRepository;
+  }
+
+  protected getEntityTarget(): new () => TypeOrmFinancialRecordEntity {
+    return TypeOrmFinancialRecordEntity;
   }
 
   public async logChanges(
@@ -52,9 +60,5 @@ export class TypeOrmFinancialRecordRepositoryAdapter
     log.change_reason = changeReason;
 
     await this.logRepository.save(log);
-  }
-
-  protected getEntityTarget(): new () => TypeOrmFinancialRecordEntity {
-    return TypeOrmFinancialRecordEntity;
   }
 }

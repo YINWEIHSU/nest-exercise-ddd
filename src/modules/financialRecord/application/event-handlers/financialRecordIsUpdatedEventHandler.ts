@@ -1,4 +1,4 @@
-import { FinancialRecordUpdatedDomainEvent } from '../../domain/events/financialRecordUpdatesDomainEvent';
+import { FinancialRecordUpdatedDomainEvent } from '../../domain/events/financialRecordUpdatedDomainEvent';
 import { FinancialRecordRepositoryPort } from '../../database/financialRecordRepositoryPort';
 import { OnEvent } from '@nestjs/event-emitter';
 import { Inject, Injectable } from '@nestjs/common';

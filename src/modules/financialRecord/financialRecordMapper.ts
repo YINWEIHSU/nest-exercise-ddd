@@ -42,16 +42,18 @@ export class FinancialRecordMapper
       TWD_amount: copy.money.twdAmount,
       adjusted_TWD_amount: copy.money.adjustedTwdAmount,
       accrual_voucher_number: copy.voucher
-        ? copy.voucher.accrualVoucherNumber
+        ? (copy.voucher.accrualVoucherNumber as string)
         : null,
       actual_voucher_number: copy.voucher
-        ? copy.voucher.actualVoucherNumber
+        ? (copy.voucher.actualVoucherNumber as string)
         : null,
-      invoice_number: copy.invoice ? copy.invoice.invoiceNumber : null,
+      invoice_number: copy.invoice
+        ? (copy.invoice.invoiceNumber as string)
+        : null,
       uniform_invoice_number: copy.invoice
-        ? copy.invoice.uniformInvoiceNumber
+        ? (copy.invoice.uniformInvoiceNumber as string)
         : null,
-      invoice_date: copy.invoice ? copy.invoice.invoiceDate : null,
+      invoice_date: copy.invoice ? (copy.invoice.invoiceDate as string) : null,
       note: copy.note,
       is_locked: copy.isLocked,
       is_deleted: copy.isDeleted,

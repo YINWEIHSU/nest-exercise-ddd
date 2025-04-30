@@ -8,7 +8,6 @@ import {
 } from 'typeorm';
 import { TypeOrmFinancialRecordEntity } from './typeOrmFinancialRecordEntity';
 
-
 @Entity({ name: 'financial_records_log' })
 export class TypeOrmFinancialRecordLogEntity {
   [key: string]: unknown;

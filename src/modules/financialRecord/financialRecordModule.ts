@@ -20,9 +20,13 @@ import { FindFinancialRecordsHttpController } from './queries/find-financial-rec
 import { CreateFinancialRecordHttpController } from './commands/create-financial-record/createFinancialRecordHttpController';
 import { CreateFinancialRecordService } from './commands/create-financial-record/createFinancialRecordService';
 import { FinancialRecordIsUpdatedEventHandler } from './application/event-handlers/FinancialRecordIsUpdatedEventHandler';
+import { UpdateFinancialRecordHttpController } from './commands/update-financial-record/updateFinancialRecordHttpController';
+import { UpdateFinancialRecordService } from './commands/update-financial-record/updateFinancialRecordService';
+import { TypeOrmFinancialRecordLogEntity } from './database/typeorm/typeOrmFinancialRecordLogEntity';
 
 const httpControllers = [
   CreateFinancialRecordHttpController,
+  UpdateFinancialRecordHttpController,
   // DeleteFinancialRecordHttpController,
   FindFinancialRecordHttpController,
   FindFinancialRecordsHttpController,
@@ -30,6 +34,7 @@ const httpControllers = [
 
 const commandHandlers: Provider[] = [
   CreateFinancialRecordService,
+  UpdateFinancialRecordService,
   // DeleteFinancialRecordService,
 ];
 
@@ -38,9 +43,7 @@ const queryHandlers: Provider[] = [
   FindFinancialRecordsQueryHandler,
 ];
 
-const eventHandlers: Provider[] = [
-  FinancialRecordIsUpdatedEventHandler,
-]
+const eventHandlers: Provider[] = [FinancialRecordIsUpdatedEventHandler];
 
 const mappers: Provider[] = [FinancialRecordMapper];
 
@@ -57,7 +60,10 @@ const repositories: Provider[] = [
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([TypeOrmFinancialRecordEntity]),
+    TypeOrmModule.forFeature([
+      TypeOrmFinancialRecordEntity,
+      TypeOrmFinancialRecordLogEntity,
+    ]),
     CqrsModule,
   ],
   controllers: [...httpControllers],

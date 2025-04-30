@@ -1,4 +1,3 @@
-import { FinancialRecordRepositoryPort } from '../../database/financialRecordRepositoryPort';
 import { Money } from '../../domain/value-objects/moneyValueObject';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';

@@ -1,15 +1,15 @@
-import { RequestContextService } from '@libs/application/context/AppRequestContext';
-import { AggregateRoot, PaginatedQueryParams, Paginated } from '@libs/ddd';
+import { AggregateRoot } from '@libs/ddd';
 import { Mapper } from '@libs/ddd';
 import { RepositoryPort } from '@libs/ddd';
 import { ConflictException } from '@libs/exceptions';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import {
-  QueryRunner,
   Repository,
   DataSource,
   QueryFailedError,
   EntityManager,
+  Equal,
+  FindOptionsWhere,
 } from 'typeorm';
 import { LoggerPort } from '../ports/logger.port';
 import { ObjectLiteral } from '../types';
@@ -19,43 +19,61 @@ export abstract class RepositoryBase<
   DbModel extends ObjectLiteral,
 > implements RepositoryPort<Aggregate>
 {
-  protected abstract repository: RepositoryPort<Aggregate>;
+  protected readonly dataSource: DataSource;
+  protected abstract getRepository(): Repository<DbModel>;
   protected abstract getEntityTarget(): new () => DbModel;
 
   protected constructor(
-    private readonly dataSource: DataSource,
+    dataSource: DataSource,
     protected readonly mapper: Mapper<Aggregate, DbModel>,
     protected readonly eventEmitter: EventEmitter2,
     protected readonly logger: LoggerPort,
-  ) {}
+  ) {
+    this.dataSource = dataSource;
+  }
 
   async findOneById(id: string): Promise<Aggregate | null> {
-    const entity = await this.repository.findOneById(id);
+    const repository = this.getRepository();
+    const entity = await repository.findOne({
+      where: { id: Equal(id) } as unknown as FindOptionsWhere<DbModel>,
+    });
     return entity ? this.mapper.toDomain(entity) : null;
   }
 
   async findAll(): Promise<Aggregate[]> {
-    const entities = await this.repository.findAll();
+    const repository = this.getRepository();
+    const entities = await repository.find();
     return entities.map((entity) => this.mapper.toDomain(entity));
   }
 
-  async save(entity: Aggregate, entityManager?: EntityManager): Promise<number> {
+  async save(
+    entity: Aggregate,
+    entityManager?: EntityManager,
+  ): Promise<number> {
     const record = this.mapper.toPersistence(entity);
-    if (!this.isIdExist(record.id)) {
-      delete record.id;
+    const recordToSave = { ...record };
+
+    if (!this.isIdExist(recordToSave.id)) {
+      delete recordToSave.id;
     }
+
     let result: DbModel;
     if (entityManager) {
       const repository = entityManager.getRepository<DbModel>(
         this.getEntityTarget(),
       );
-      result = await repository.save(record);
+      result = await repository.save(recordToSave);
     } else {
-      const typeormRepository = this
-        .repository as unknown as Repository<DbModel>;
-      result = await typeormRepository.save(record);
+      const repository = this.getRepository();
+      result = await repository.save(recordToSave);
     }
-    await entity.publishEvents(this.logger, this.eventEmitter);
+
+    // prevent db lock
+    setImmediate(() => {
+      entity
+        .publishEvents(this.logger, this.eventEmitter)
+        .catch((err) => this.logger.error('Error publishing events', err));
+    });
     return result.id as number;
   }
 
