@@ -28,9 +28,3 @@ export interface CreateFinancialRecordProps {
   note: string;
   creatorId: string;
 }
-
-export enum UserRoles {
-  admin = 'admin',
-  moderator = 'moderator',
-  guest = 'guest',
-}

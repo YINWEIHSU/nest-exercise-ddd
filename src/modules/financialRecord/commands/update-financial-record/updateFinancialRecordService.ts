@@ -127,8 +127,7 @@ export class UpdateFinancialRecordService
           aggregateId: financialRecord.id,
           financialRecordId: financialRecord.id,
           changeReason: command.changeReason,
-          //TODO: 這裡的 userId 需要從 JWT token 中獲取
-          userId: '1',
+          userId: command.metadata.userId as string,
           oldValues,
           newValues: { ...oldValues, ...changeValues },
         }),

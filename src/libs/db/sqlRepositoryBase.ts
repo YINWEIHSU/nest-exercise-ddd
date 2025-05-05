@@ -101,6 +101,39 @@ export abstract class RepositoryBase<
     }
   }
 
+  async insert(
+    entity: Aggregate,
+    entityManager?: EntityManager,
+  ): Promise<number> {
+    const record = this.mapper.toPersistence(entity);
+    const recordToInsert = { ...record };
+
+    delete recordToInsert.id;
+
+    let result: DbModel;
+    if (entityManager) {
+      const repository = entityManager.getRepository<DbModel>(
+        this.getEntityTarget(),
+      );
+      // 先創建一個新的實體
+      const newEntity = repository.create(recordToInsert);
+      // 然後保存它
+      result = await repository.save(newEntity);
+    } else {
+      const repository = this.getRepository();
+      const newEntity = repository.create(recordToInsert);
+      result = await repository.save(newEntity);
+    }
+
+    // prevent db lock
+    setImmediate(() => {
+      entity
+        .publishEvents(this.logger, this.eventEmitter)
+        .catch((err) => this.logger.error('Error publishing events', err));
+    });
+    return result.id as number;
+  }
+
   protected isIdExist(id: any): boolean {
     return !(
       id === undefined ||

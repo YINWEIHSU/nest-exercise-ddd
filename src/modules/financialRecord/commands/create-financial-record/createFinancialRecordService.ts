@@ -32,24 +32,16 @@ export class CreateFinancialRecordService
         adjustedTwdAmount: command.twdAmount,
       }),
       note: command.note,
-      // TODO: 等驗證處理完
-      // creatorId: command.metadata.userId as string,
-      creatorId: '1',
+      creatorId: command.metadata.userId as string,
     });
-
-    try {
-      /* Wrapping operation in a transaction to make sure
-         that all domain events are processed atomically */
-      return await this.financialRecordRepo.transaction(
-        async (entityManager) => {
-          const id = await this.financialRecordRepo.save(financialRecord, entityManager);
-
-          // 返回聚合根 ID
-          return id.toString();
-        },
+    return await this.financialRecordRepo.transaction(async (entityManager) => {
+      const id = await this.financialRecordRepo.insert(
+        financialRecord,
+        entityManager,
       );
-    } catch (error: any) {
-      throw error;
-    }
+
+      // 返回聚合根 ID
+      return id.toString();
+    });
   }
 }

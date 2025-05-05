@@ -36,7 +36,7 @@ import { TypeOrmFinancialRecordLogEntity } from './modules/financialRecord/datab
     AppService,
     {
       provide: APP_GUARD,
-      useClass: AuthGuard, // 全局使用認證守衛
+      useClass: AuthGuard,
     },
   ],
 })

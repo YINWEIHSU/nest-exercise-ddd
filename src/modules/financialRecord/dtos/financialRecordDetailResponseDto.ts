@@ -2,8 +2,44 @@ import { ApiProperty } from '@nestjs/swagger';
 import { TransactionType } from '@libs/enums/transactionTypeEnums';
 import { IdResponse } from '@src/libs/api/id.response.dto';
 
+export interface FinancialRecordDetailResponseDtoProps {
+  id: number;
+  transactionType: TransactionType;
+  subsidiaryId: number;
+  counterpartyId: number | null;
+  subAccountId: number;
+  mainAccountId: number;
+  applicationFormId: number;
+  date: string;
+  currencyCode: string;
+  exchangeRate: number;
+  adjustedExchangeRate: number;
+  amount: number;
+  adjustedAmount: number;
+  twdAmount: number;
+  adjustedTwdAmount: number;
+  accrualVoucherNumber: string | null;
+  actualVoucherNumber: string | null;
+  invoiceNumber: string | null;
+  uniformInvoiceNumber: string | null;
+  invoiceDate: string | null;
+  note: string | null;
+  isLocked: boolean;
+  isDeleted: boolean;
+  creatorId: number;
+  subsidiaryName: string;
+  counterpartyName: string | null;
+  identificationNumber: string | null;
+  applicationFormName: string | null;
+  counterpartyEntityType: string | null;
+  registeredAddress: string | null;
+  mainAccountName: string | null;
+  subAccountName: string | null;
+  creatorName: string | null;
+}
+
 export class FinancialRecordDetailResponseDto extends IdResponse {
-  constructor(props: any) {
+  constructor(props: FinancialRecordDetailResponseDtoProps) {
     super(props.id);
     this.transactionType = props.transactionType;
     this.subsidiaryId = props.subsidiaryId;

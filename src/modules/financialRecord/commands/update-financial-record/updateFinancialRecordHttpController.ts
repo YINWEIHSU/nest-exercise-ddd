@@ -6,6 +6,7 @@ import { UpdateFinancialRecordCommand } from './updateFinancialRecordCommand';
 import { UpdateFinancialRecordRequestDto } from './updateFinancialRecordRequestDto';
 import { FinancialRecordResponseDto } from '../../dtos/financialRecordResponseDto';
 import { ApiErrorResponse } from '@src/libs/api/api-error.response';
+import { CurrentUser } from '@src/libs/decorators/user.decorator';
 
 @Controller(routesV1.version)
 export class UpdateFinancialRecordHttpController {
@@ -24,9 +25,16 @@ export class UpdateFinancialRecordHttpController {
   async update(
     @Param('id') id: string,
     @Body() body: UpdateFinancialRecordRequestDto,
+    @CurrentUser() userId: string,
   ): Promise<Partial<UpdateFinancialRecordRequestDto>> {
-    const command = new UpdateFinancialRecordCommand({ ...body, id });
-
+    const command = new UpdateFinancialRecordCommand({
+      ...body,
+      id,
+      metadata: {
+        userId,
+        timestamp: Date.now(),
+      },
+    });
     const result: Partial<UpdateFinancialRecordRequestDto> =
       await this.commandBus.execute(command);
 

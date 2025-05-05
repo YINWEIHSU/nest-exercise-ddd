@@ -5,7 +5,6 @@ import {
   FinancialRecordProps,
   CreateFinancialRecordProps,
 } from './financialRecordTypes';
-import { FinancialRecordCreatedDomainEvent } from './events/financialRecordCreatedDomainEvent';
 import { randomUUID } from 'crypto';
 import { TransactionType } from '@src/libs/enums/transactionTypeEnums';
 import { Money, MoneyProps } from './value-objects/moneyValueObject';
@@ -28,20 +27,6 @@ export class FinancialRecordEntity extends AggregateRoot<FinancialRecordProps> {
       isDeleted: false,
     };
     const financialRecord = new FinancialRecordEntity({ id, props });
-    /* adding "FinancialRecordCreated" Domain Event that will be published
-    eventually so an event handler somewhere may receive it and do an
-    appropriate action. Multiple events can be added if needed. */
-    financialRecord.addEvent(
-      new FinancialRecordCreatedDomainEvent({
-        aggregateId: id,
-        subAccountId: props.subAccountId,
-        subsidiaryId: props.subsidiaryId,
-        counterpartyId: props.counterpartyId,
-        date: props.date,
-        note: props.note,
-        ...props.money.unpack(),
-      }),
-    );
     return financialRecord;
   }
 
