@@ -23,7 +23,7 @@ import { TypeOrmFinancialRecordLogEntity } from './modules/financialRecord/datab
       password: databaseConfig.password,
       database: databaseConfig.database,
       entities: [TypeOrmFinancialRecordEntity, TypeOrmFinancialRecordLogEntity],
-      synchronize: true,
+      synchronize: false,
     }),
     AuthModule,
     CqrsModule,
@@ -36,8 +36,9 @@ import { TypeOrmFinancialRecordLogEntity } from './modules/financialRecord/datab
     AppService,
     {
       provide: APP_GUARD,
-      useClass: AuthGuard,
+      useExisting: AuthGuard,
     },
+    AuthGuard,
   ],
 })
 export class AppModule {}

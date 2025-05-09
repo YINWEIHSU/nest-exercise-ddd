@@ -82,7 +82,6 @@ export class PaginatedFinancialRecordsRequestDto extends PaginatedQueryRequestDt
   @Transform(({ value }) => {
     if (value === 'true') return true;
     if (value === 'false') return false;
-    return value;
   })
   readonly hasUniformInvoice?: boolean;
 

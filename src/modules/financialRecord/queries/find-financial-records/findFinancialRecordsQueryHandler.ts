@@ -4,9 +4,52 @@ import { Paginated } from '@libs/ddd';
 import { DataSource } from 'typeorm';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { PaginatedParams, PaginatedQueryBase } from '@libs/ddd/query.base';
+import { TransactionType } from '@src/libs/enums/transactionTypeEnums';
 import { Nullable } from '@libs/types';
 import { FinancialRecordDetailResponseDto } from '../../dtos/financialRecordDetailResponseDto';
 import { PaginatedResponseDto } from '@src/libs/api/paginated.response.base.js';
+
+interface FinancialRecordRawData {
+  id: number;
+  subsidiaryId: number;
+  subsidiaryName: string;
+  transactionType: TransactionType;
+  counterpartyId: number;
+  counterpartyName: string;
+  identificationNumber: string;
+  applicationFormName: string;
+  counterpartyEntityType: string;
+  registeredAddress: string;
+  mainAccountId: number;
+  mainAccountName: string;
+  subAccountId: number;
+  subAccountName: string;
+  applicationFormId: number;
+  date: string;
+  currencyCode: string;
+  exchangeRate: string;
+  adjustedExchangeRate: string;
+  amount: string;
+  adjustedAmount: string;
+  twdAmount: string;
+  adjustedTwdAmount: string;
+  accrualVoucherNumber: string;
+  actualVoucherNumber: string;
+  invoiceNumber: string;
+  uniformInvoiceNumber: string;
+  invoiceDate: string;
+  note: string;
+  isLocked: number;
+  isDeleted: number;
+  creatorId: number;
+  creatorName: string;
+  created_at: Date;
+  updated_at: Date;
+}
+
+interface CountResult {
+  count: string;
+}
 
 export class FindFinancialRecordsQuery extends PaginatedQueryBase {
   readonly startDate: string;
@@ -243,8 +286,14 @@ export class FindFinancialRecordsQueryHandler
       // 獲取總筆數
       const totalCount = await countQueryBuilder
         .select('COUNT(fr.id)', 'count')
-        .getRawOne()
-        .then((result) => parseInt(result.count, 10));
+        .getRawOne<CountResult>()
+        .then((result) => {
+          console.log('result', result);
+          if (!result || !result.count) {
+            return 0;
+          }
+          return parseInt(result.count, 10);
+        });
 
       // 添加分頁
       if (query.currentPage && query.itemCounts) {
@@ -253,7 +302,8 @@ export class FindFinancialRecordsQueryHandler
           .limit(query.itemCounts);
       }
 
-      const items = await queryBuilder.getRawMany();
+      const items = await queryBuilder.getRawMany<FinancialRecordRawData>();
+      console.log('items', items);
       const convertedItems: FinancialRecordDetailResponseDto[] = items.map(
         (item) => {
           return new FinancialRecordDetailResponseDto({

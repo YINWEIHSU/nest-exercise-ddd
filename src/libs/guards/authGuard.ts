@@ -7,6 +7,9 @@ import {
 } from '@nestjs/common';
 import { IAuthService } from '../externalServices/auth';
 
+export interface RequestWithUser extends Request {
+  userId?: string;
+}
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
@@ -14,8 +17,9 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest();
-    const authHeader = request.headers['authorization'];
+    console.log('AuthGuard canActivate called');
+    const request = context.switchToHttp().getRequest<RequestWithUser>();
+    const authHeader = request.headers['authorization'] as string;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       throw new UnauthorizedException('Invalid accessToken.');
@@ -29,7 +33,7 @@ export class AuthGuard implements CanActivate {
         validationResult.message || 'Unauthorized User',
       );
     }
-    request.userId = validationResult.userId;
+    request.userId = validationResult.userId?.toString();
 
     return true;
   }
