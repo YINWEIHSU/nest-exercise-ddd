@@ -5,8 +5,6 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './libs/guards/authGuard';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthModule } from './libs/externalServices/auth/authModule';
 import { databaseConfig } from './config/databaseConfig';
 import { TypeOrmFinancialRecordEntity } from './modules/financialRecord/database/typeorm/typeOrmFinancialRecordEntity';
@@ -31,9 +29,8 @@ import { TypeOrmFinancialRecordLogEntity } from './modules/financialRecord/datab
     RequestContextModule,
     FinancialRecordModule,
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [
-    AppService,
     {
       provide: APP_GUARD,
       useExisting: AuthGuard,
