@@ -23,6 +23,8 @@ import { FinancialRecordIsUpdatedEventHandler } from './application/event-handle
 import { UpdateFinancialRecordHttpController } from './commands/update-financial-record/updateFinancialRecordHttpController';
 import { UpdateFinancialRecordService } from './commands/update-financial-record/updateFinancialRecordService';
 import { TypeOrmFinancialRecordLogEntity } from './database/typeorm/typeOrmFinancialRecordLogEntity';
+import { FindFinancialRecordLogHttpController } from './queries/find-financial-record-log/findFinancialRecordLogHttpController';
+import { FindFinancialRecordLogQueryHandler } from './queries/find-financial-record-log/findFinancialRecordLogQueryHandler';
 
 const httpControllers = [
   CreateFinancialRecordHttpController,
@@ -30,6 +32,7 @@ const httpControllers = [
   // DeleteFinancialRecordHttpController,
   FindFinancialRecordHttpController,
   FindFinancialRecordsHttpController,
+  FindFinancialRecordLogHttpController
 ];
 
 const commandHandlers: Provider[] = [
@@ -41,6 +44,7 @@ const commandHandlers: Provider[] = [
 const queryHandlers: Provider[] = [
   FindFinancialRecordQueryHandler,
   FindFinancialRecordsQueryHandler,
+  FindFinancialRecordLogQueryHandler
 ];
 
 const eventHandlers: Provider[] = [FinancialRecordIsUpdatedEventHandler];

@@ -1,0 +1,29 @@
+import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
+import { routesV1 } from '@src/config/appRoutes';
+import { QueryBus } from '@nestjs/cqrs';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { FindFinancialRecordLogRequestDto } from './findFinancialRecordLogRequestDto';
+import { FindFinancialRecordLogQuery } from './findFinancialRecordLogQueryHandler';
+import { FinancialRecordLogResponseDto } from '../../dtos/financialRecordLogResponseDto';
+
+@Controller(routesV1.version)
+export class FindFinancialRecordLogHttpController {
+  constructor(private readonly queryBus: QueryBus) {}
+
+  @Get(routesV1.financialRecord.log)
+  @ApiOperation({ summary: 'Find Financial record log by id' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: FinancialRecordLogResponseDto,
+  })
+  async findFinancialRecord(
+    @Param() params: FindFinancialRecordLogRequestDto,
+  ): Promise<any> {
+    const query = new FindFinancialRecordLogQuery({
+      id: params.id,
+    });
+    const financialRecordLog: any =
+      await this.queryBus.execute(query);
+    return FinancialRecordLogResponseDto.buildResponse(financialRecordLog.logs, financialRecordLog.references);  
+  }
+}

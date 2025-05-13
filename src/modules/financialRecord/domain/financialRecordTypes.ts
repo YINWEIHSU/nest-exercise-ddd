@@ -2,6 +2,7 @@ import { Money } from './value-objects/moneyValueObject';
 import { Voucher } from './value-objects/voucherValueObject';
 import { Invoice } from './value-objects/invoiceValueObject';
 import { TransactionType } from '@src/libs/enums/transactionTypeEnums';
+import { TypeOrmFinancialRecordLogEntity } from '../database/typeorm/typeOrmFinancialRecordLogEntity';
 
 export interface FinancialRecordProps {
   subsidiaryId: string;
@@ -28,3 +29,7 @@ export interface CreateFinancialRecordProps {
   note: string;
   creatorId: string;
 }
+
+export type FinancialRecordLogWithUserName = TypeOrmFinancialRecordLogEntity & {
+  user_name?: string;
+};
