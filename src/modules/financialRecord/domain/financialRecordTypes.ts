@@ -31,5 +31,5 @@ export interface CreateFinancialRecordProps {
 }
 
 export type FinancialRecordLogWithUserName = TypeOrmFinancialRecordLogEntity & {
-  user_name?: string;
+  user_name: string;
 };

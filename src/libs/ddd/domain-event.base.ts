@@ -52,3 +52,25 @@ export abstract class DomainEvent {
     };
   }
 }
+
+export type BatchDomainEventProps<T> = Omit<T, 'id' | 'metadata'> & {
+  financialRecordIds: string[];
+  metadata?: DomainEventMetadata;
+};
+
+export abstract class BatchDomainEvent extends DomainEvent {
+  public readonly financialRecordIds: string[];
+
+  constructor(props: BatchDomainEventProps<unknown>) {
+    super({
+      aggregateId: props.financialRecordIds[0].toString(), // 代表整體事件的主鍵
+      metadata: props.metadata,
+    });
+
+    if (Guard.isEmpty(props.financialRecordIds)) {
+      throw new ArgumentNotProvidedException('aggregateIds should not be empty');
+    }
+
+    this.financialRecordIds= props.financialRecordIds;
+  }
+}

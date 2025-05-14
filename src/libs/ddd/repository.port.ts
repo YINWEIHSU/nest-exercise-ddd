@@ -28,8 +28,13 @@ export interface RepositoryPort<Entity> {
   // insert(entity: Entity | Entity[]): Promise<void>;
   findOneById(id: string): Promise<Nullable<Entity>>;
   findAll(): Promise<Entity[]>;
+  findByIds(ids: string[]): Promise<Entity[]>;
   save(entity: Entity, entityManager?: EntityManager): Promise<number>;
   // findAllPaginated(params: PaginatedQueryParams): Promise<Paginated<Entity>>;
+  batchSave(
+    entities: Entity[],
+    entityManager?: EntityManager,
+  ): Promise<number[]>;
   transaction<T>(
     handler: (entityManager: EntityManager) => Promise<T>,
   ): Promise<T>;

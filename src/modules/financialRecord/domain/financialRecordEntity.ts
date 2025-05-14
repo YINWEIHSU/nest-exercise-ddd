@@ -71,11 +71,7 @@ export class FinancialRecordEntity extends AggregateRoot<FinancialRecordProps> {
   }
 
   lock(): void {
-    // this.addEvent(
-    //   new FinancialRecordLockedDomainEvent({
-    //     aggregateId: this.id,
-    //   }),
-    // );
+    this.props.isLocked = true;
   }
 
   delete(): void {

@@ -86,7 +86,7 @@ export class FinancialRecordLogResponseDto {
       }
 
       return {
-        userName: log.user_name || log.user_id,
+        userName: log.user_name,
         updatedValues,
         changeReason: log.change_reason,
         createdAt: log.created_at,

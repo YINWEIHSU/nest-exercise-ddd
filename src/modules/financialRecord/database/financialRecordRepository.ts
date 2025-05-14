@@ -61,4 +61,25 @@ export class TypeOrmFinancialRecordRepositoryAdapter
 
     await this.logRepository.save(log);
   }
+
+  public async logBatchChanges(
+    financialRecordIds: string[],
+    userId: number,
+    oldValues: Record<string, any>,
+    newValues: Record<string, any>,
+    changeReason: string,
+  ): Promise<void> {
+    const logs = financialRecordIds.map((id) => {
+      return this.logRepository.create({
+        financial_record_id: Number(id),
+        user_id: userId,
+        old_values: oldValues,
+        new_values: newValues,
+        change_reason: changeReason,
+        changed_at: new Date(),
+      });
+    });
+    await this.logRepository.save(logs);
+  }
+
 }
