@@ -1,11 +1,11 @@
 import { Command, CommandProps } from '@libs/ddd';
 
 
-export class LockFinancialRecordCommand extends Command {
+export class LockFinancialRecordsCommand extends Command {
   readonly financialRecordIds: string[];
 
   constructor(
-    props: CommandProps<LockFinancialRecordCommand> & {
+    props: CommandProps<LockFinancialRecordsCommand> & {
       financialRecordIds: string[];
     },
   ) {

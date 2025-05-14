@@ -1,17 +1,14 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
-import { LockFinancialRecordCommand } from './lockFinancialRecordCommand';
-import { FinancialRecordEntity } from '../../domain/financialRecordEntity';
-import { FinancialRecordUpdatedDomainEvent } from '../../domain/events/financialRecordUpdatedDomainEvent';
+import { LockFinancialRecordsCommand } from './lockFinancialRecordsCommand';
 import { FinancialRecordBatchUpdatedDomainEvent } from '../../domain/events/financialRecordBatchUpdatedDomainEvent';
 import { TypeOrmFinancialRecordRepositoryAdapter } from '../../database/financialRecordRepository';
 import { FINANCIAL_RECORD_REPOSITORY } from '../../financialRecordDiTokens';
-import { LockFinancialRecordRequestDto } from './lockFinancialRecordRequestDto';
 
-@CommandHandler(LockFinancialRecordCommand)
-export class LockFinancialRecordService
+@CommandHandler(LockFinancialRecordsCommand)
+export class LockFinancialRecordsService
   
-  implements ICommandHandler<LockFinancialRecordCommand, boolean> {
+  implements ICommandHandler<LockFinancialRecordsCommand, object> {
     constructor(
       @Inject(FINANCIAL_RECORD_REPOSITORY)
       private readonly financialRecordRepo: TypeOrmFinancialRecordRepositoryAdapter,
@@ -19,8 +16,8 @@ export class LockFinancialRecordService
     ) {}
 
   async execute(
-    command: LockFinancialRecordCommand,
-  ): Promise<boolean> {
+    command: LockFinancialRecordsCommand,
+  ): Promise<object> {
     //找出特定的財務紀錄
     const financialRecords = await this.financialRecordRepo.findByIds(command.financialRecordIds);
     //將這些紀錄鎖定
@@ -48,6 +45,8 @@ export class LockFinancialRecordService
      await this.financialRecordRepo.batchSave(financialRecords, entityManager);
     });
 
-    return true;
+    return {
+      "message": "成功上鎖"
+    };
   }
 }

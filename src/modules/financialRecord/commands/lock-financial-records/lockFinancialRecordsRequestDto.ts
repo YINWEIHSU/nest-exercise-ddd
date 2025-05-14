@@ -7,7 +7,7 @@ import {
 } from 'class-validator';
 
 
-export class LockFinancialRecordRequestDto {
+export class LockFinancialRecordsRequestDto {
   @ApiProperty({
     example: [1, 2, 3],
     description: 'IDs of financial records to lock',

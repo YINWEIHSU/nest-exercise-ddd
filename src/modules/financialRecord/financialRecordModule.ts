@@ -25,8 +25,8 @@ import { UpdateFinancialRecordService } from './commands/update-financial-record
 import { TypeOrmFinancialRecordLogEntity } from './database/typeorm/typeOrmFinancialRecordLogEntity';
 import { FindFinancialRecordLogHttpController } from './queries/find-financial-record-log/findFinancialRecordLogHttpController';
 import { FindFinancialRecordLogQueryHandler } from './queries/find-financial-record-log/findFinancialRecordLogQueryHandler';
-import { LockFinancialRecordHttpController } from './commands/lock-financial-records/lockFinancialRecordHttpController';
-import { LockFinancialRecordService } from './commands/lock-financial-records/lockFinancialRecordService';
+import { LockFinancialRecordsHttpController } from './commands/lock-financial-records/lockFinancialRecordsHttpController';
+import { LockFinancialRecordsService } from './commands/lock-financial-records/lockFinancialRecordsService';
 import { FinancialRecordIsBatchUpdatedEventHandler } from './application/event-handlers/financialRecordIsBatchUpdatedEventHandler';
 
 
@@ -37,14 +37,14 @@ const httpControllers = [
   FindFinancialRecordHttpController,
   FindFinancialRecordsHttpController,
   FindFinancialRecordLogHttpController,
-  LockFinancialRecordHttpController 
+  LockFinancialRecordsHttpController
 ];
 
 const commandHandlers: Provider[] = [
   CreateFinancialRecordService,
   UpdateFinancialRecordService,
   // DeleteFinancialRecordService,
-  LockFinancialRecordService,
+  LockFinancialRecordsService,
 ];
 
 const queryHandlers: Provider[] = [
