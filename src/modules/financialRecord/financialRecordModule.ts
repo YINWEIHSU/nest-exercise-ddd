@@ -28,6 +28,8 @@ import { FindFinancialRecordLogQueryHandler } from './queries/find-financial-rec
 import { LockFinancialRecordsHttpController } from './commands/lock-financial-records/lockFinancialRecordsHttpController';
 import { LockFinancialRecordsService } from './commands/lock-financial-records/lockFinancialRecordsService';
 import { FinancialRecordIsBatchUpdatedEventHandler } from './application/event-handlers/financialRecordIsBatchUpdatedEventHandler';
+import { updateFinancialRecordsInvoiceHttpController } from './commands/update-financial-records-invoice/updateFinancialRecordsInvoiceHttpController';
+import { updateFinancialRecordsInvoiceService } from './commands/update-financial-records-invoice/updateFinancialRecordsInvoiceService';
 
 
 const httpControllers = [
@@ -37,7 +39,8 @@ const httpControllers = [
   FindFinancialRecordHttpController,
   FindFinancialRecordsHttpController,
   FindFinancialRecordLogHttpController,
-  LockFinancialRecordsHttpController
+  LockFinancialRecordsHttpController,
+  updateFinancialRecordsInvoiceHttpController
 ];
 
 const commandHandlers: Provider[] = [
@@ -45,6 +48,7 @@ const commandHandlers: Provider[] = [
   UpdateFinancialRecordService,
   // DeleteFinancialRecordService,
   LockFinancialRecordsService,
+  updateFinancialRecordsInvoiceService
 ];
 
 const queryHandlers: Provider[] = [

@@ -17,5 +17,6 @@ export const routesV1 = {
     getList: `${financialRecordRoot}`,
     log: `${financialRecordRoot}/:id/log`,
     lock: `${financialRecordRoot}/lock`,
+    invoice: `${financialRecordRoot}/invoice-info`,
   },
 };

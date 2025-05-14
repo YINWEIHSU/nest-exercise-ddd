@@ -53,7 +53,6 @@ export class FindFinancialRecordLogQueryHandler
     )
     .orderBy('frl.created_at', 'DESC')
     .getRawMany();
-    console.log('logs', logs);
     //需要將logs裡values中的id轉換成對應的名稱,故需要查詢對應的資料表
     const [
       applicationForms,

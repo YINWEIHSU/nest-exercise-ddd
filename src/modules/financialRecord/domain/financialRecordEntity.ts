@@ -69,6 +69,9 @@ export class FinancialRecordEntity extends AggregateRoot<FinancialRecordProps> {
   get note(): string {
     return this.props.note;
   }
+  get isLocked(): boolean {
+    return this.props.isLocked;
+  }
 
   lock(): void {
     this.props.isLocked = true;
@@ -109,14 +112,6 @@ export class FinancialRecordEntity extends AggregateRoot<FinancialRecordProps> {
       ...props,
     } as InvoiceProps);
     this.props.invoice = newInvoice;
-    // this.addEvent(
-    //   new InvoiceUpdatedDomainEvent({
-    //     aggregateId: this.id,
-    //     invoiceNumber: newInvoice.invoiceNumber as string,
-    //     uniformInvoiceNumber: newInvoice.uniformInvoiceNumber as string,
-    //     invoiceDate: newInvoice.invoiceDate as string,
-    //   }),
-    // );
   }
 
   updateVoucher(props: VoucherProps): void {
