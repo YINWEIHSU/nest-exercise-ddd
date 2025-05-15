@@ -36,7 +36,7 @@ class InvoiceInfoDto {
   invoiceDate: string;
 }
 
-export class updateFinancialRecordsInvoiceRequestDto {
+export class UpdateFinancialRecordsInvoiceRequestDto {
   @ApiProperty({
     example: [1, 2, 3],
     description: '要鎖定的財務記錄 ID 陣列',

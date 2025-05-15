@@ -18,5 +18,6 @@ export const routesV1 = {
     log: `${financialRecordRoot}/:id/log`,
     lock: `${financialRecordRoot}/lock`,
     invoice: `${financialRecordRoot}/invoice-info`,
+    voucher: `${financialRecordRoot}/voucher-number`,
   },
 };

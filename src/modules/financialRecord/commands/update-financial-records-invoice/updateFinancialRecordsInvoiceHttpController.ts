@@ -3,7 +3,7 @@ import { routesV1 } from '@src/config/appRoutes';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CommandBus } from '@nestjs/cqrs';
 import { UpdateFinancialRecordsInvoiceCommand } from './updateFinancialRecordsInvoiceCommand';
-import { updateFinancialRecordsInvoiceRequestDto } from './updateFinancialRecordsInvoiceRequestDto';
+import { UpdateFinancialRecordsInvoiceRequestDto } from './updateFinancialRecordsInvoiceRequestDto';
 import { FinancialRecordResponseDto } from '../../dtos/financialRecordResponseDto';
 import { ApiErrorResponse } from '@src/libs/api/api-error.response';
 import { CurrentUser } from '@src/libs/decorators/user.decorator';
@@ -23,9 +23,9 @@ export class updateFinancialRecordsInvoiceHttpController {
   })
   @Patch(routesV1.financialRecord.invoice)
   async update (
-    @Body() body: updateFinancialRecordsInvoiceRequestDto,
+    @Body() body: UpdateFinancialRecordsInvoiceRequestDto,
     @CurrentUser() userId: string,
-  ): Promise<Partial<updateFinancialRecordsInvoiceRequestDto>> {
+  ): Promise<Partial<UpdateFinancialRecordsInvoiceRequestDto>> {
     const command = new UpdateFinancialRecordsInvoiceCommand({
       ...body,
       metadata: {
@@ -33,7 +33,7 @@ export class updateFinancialRecordsInvoiceHttpController {
         timestamp: Date.now(),
       },
     });
-    const result: Partial<updateFinancialRecordsInvoiceRequestDto> =
+    const result: Partial<UpdateFinancialRecordsInvoiceRequestDto> =
       await this.commandBus.execute(command);
 
     return result;
