@@ -28,8 +28,10 @@ import { FindFinancialRecordLogQueryHandler } from './queries/find-financial-rec
 import { LockFinancialRecordsHttpController } from './commands/lock-financial-records/lockFinancialRecordsHttpController';
 import { LockFinancialRecordsService } from './commands/lock-financial-records/lockFinancialRecordsService';
 import { FinancialRecordIsBatchUpdatedEventHandler } from './application/event-handlers/financialRecordIsBatchUpdatedEventHandler';
-import { updateFinancialRecordsInvoiceHttpController } from './commands/update-financial-records-invoice/updateFinancialRecordsInvoiceHttpController';
-import { updateFinancialRecordsInvoiceService } from './commands/update-financial-records-invoice/updateFinancialRecordsInvoiceService';
+import { UpdateFinancialRecordsInvoiceHttpController } from './commands/update-financial-records-invoice/updateFinancialRecordsInvoiceHttpController';
+import { UpdateFinancialRecordsInvoiceService } from './commands/update-financial-records-invoice/updateFinancialRecordsInvoiceService';
+import { UpdateFinancialRecordsVoucherHttpController } from './commands/update-financial-records-voucher/updateFinancialRecordsVoucherHttpController';
+import { UpdateFinancialRecordsVoucherService } from './commands/update-financial-records-voucher/updateFinancialRecordsVoucherService';
 
 
 const httpControllers = [
@@ -40,7 +42,8 @@ const httpControllers = [
   FindFinancialRecordsHttpController,
   FindFinancialRecordLogHttpController,
   LockFinancialRecordsHttpController,
-  updateFinancialRecordsInvoiceHttpController
+  UpdateFinancialRecordsInvoiceHttpController,
+  UpdateFinancialRecordsVoucherHttpController
 ];
 
 const commandHandlers: Provider[] = [
@@ -48,7 +51,8 @@ const commandHandlers: Provider[] = [
   UpdateFinancialRecordService,
   // DeleteFinancialRecordService,
   LockFinancialRecordsService,
-  updateFinancialRecordsInvoiceService
+  UpdateFinancialRecordsInvoiceService,
+  UpdateFinancialRecordsVoucherService
 ];
 
 const queryHandlers: Provider[] = [

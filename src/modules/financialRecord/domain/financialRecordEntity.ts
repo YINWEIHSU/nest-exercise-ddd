@@ -120,13 +120,6 @@ export class FinancialRecordEntity extends AggregateRoot<FinancialRecordProps> {
       ...props,
     } as VoucherProps);
     this.props.voucher = newVoucher;
-    // this.addEvent(
-    //   new VoucherUpdatedDomainEvent({
-    //     aggregateId: this.id,
-    //     accrualVoucherNumber: newVoucher.accrualVoucherNumber as string,
-    //     actualVoucherNumber: newVoucher.actualVoucherNumber as string,
-    //   }),
-    // );
   }
 
   updateMoney(props: MoneyProps): void {
