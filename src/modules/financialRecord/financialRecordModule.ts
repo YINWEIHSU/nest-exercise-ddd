@@ -4,10 +4,8 @@ import { TypeOrmFinancialRecordEntity } from './database/typeorm/typeOrmFinancia
 import { TypeOrmFinancialRecordRepositoryAdapter } from './database/financialRecordRepository';
 import { TypeOrmFinancialRecordRepositoryQueryAdapter } from './database/financialRecordQueryRepository';
 // import { CreateFinancialRecordHttpController } from './commands/create-user/createFinancialRecordHttpController';
-// import { DeleteFinancialRecordHttpController } from './commands/delete-user/delete-user.http-controller';
 import { FindFinancialRecordHttpController } from './queries/find-financial-record/findFinancialRecordHttpController';
 // import { CreateFinancialRecordService } from './commands/create-user/create-user.service';
-// import { DeleteFinancialRecordService } from './commands/delete-user/delete-user.service';
 import { FindFinancialRecordQueryHandler } from './queries/find-financial-record/findFinancialRecordQueryHandler';
 import { FindFinancialRecordsQueryHandler } from './queries/find-financial-records/findFinancialRecordsQueryHandler';
 import { FinancialRecordMapper } from './financialRecordMapper';
@@ -32,12 +30,13 @@ import { UpdateFinancialRecordsInvoiceHttpController } from './commands/update-f
 import { UpdateFinancialRecordsInvoiceService } from './commands/update-financial-records-invoice/updateFinancialRecordsInvoiceService';
 import { UpdateFinancialRecordsVoucherHttpController } from './commands/update-financial-records-voucher/updateFinancialRecordsVoucherHttpController';
 import { UpdateFinancialRecordsVoucherService } from './commands/update-financial-records-voucher/updateFinancialRecordsVoucherService';
-
+import { DeleteFinancialRecordsHttpController } from './commands/delete-financial-records/deleteFinancialRecordsHttpController';
+import { DeleteFinancialRecordsService } from './commands/delete-financial-records/deleteFinancialRecordsService';
 
 const httpControllers = [
   CreateFinancialRecordHttpController,
   UpdateFinancialRecordHttpController,
-  // DeleteFinancialRecordHttpController,
+  DeleteFinancialRecordsHttpController,
   FindFinancialRecordHttpController,
   FindFinancialRecordsHttpController,
   FindFinancialRecordLogHttpController,
@@ -49,7 +48,7 @@ const httpControllers = [
 const commandHandlers: Provider[] = [
   CreateFinancialRecordService,
   UpdateFinancialRecordService,
-  // DeleteFinancialRecordService,
+  DeleteFinancialRecordsService,
   LockFinancialRecordsService,
   UpdateFinancialRecordsInvoiceService,
   UpdateFinancialRecordsVoucherService
