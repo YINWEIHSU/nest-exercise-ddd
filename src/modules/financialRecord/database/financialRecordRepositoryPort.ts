@@ -26,6 +26,7 @@ export interface FinancialRecordSearchCondition {
 
 export interface FinancialRecordRepositoryPort
   extends RepositoryPort<FinancialRecordEntity> {
+
   logChanges(
     financialRecordId: number,
     userId: number,
@@ -33,4 +34,13 @@ export interface FinancialRecordRepositoryPort
     newValues: object,
     changeReason: string,
   ): Promise<void>;
+
+  logBatchChanges(
+    financialRecordIds: string[],
+    userId: number,
+    oldValues: Record<string, any>,
+    newValues: Record<string, any>,
+    changeReason: string,
+  ): Promise<void>;
+  
 }

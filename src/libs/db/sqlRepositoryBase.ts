@@ -10,6 +10,7 @@ import {
   EntityManager,
   Equal,
   FindOptionsWhere,
+  In,
 } from 'typeorm';
 import { LoggerPort } from '../ports/logger.port';
 import { ObjectLiteral } from '../types';
@@ -46,6 +47,16 @@ export abstract class RepositoryBase<
     return entities.map((entity) => this.mapper.toDomain(entity));
   }
 
+  async findByIds(
+    ids: string[],
+  ): Promise<Aggregate[]> {
+    const repository = this.getRepository();
+    const entities = await repository.findBy({
+      id: In(ids),
+    } as unknown as FindOptionsWhere<DbModel>);
+    return entities.map((entity) => this.mapper.toDomain(entity));
+  }
+
   async save(
     entity: Aggregate,
     entityManager?: EntityManager,
@@ -76,6 +87,34 @@ export abstract class RepositoryBase<
     });
     return result.id as number;
   }
+  /**
+   * 批量保存實體
+   * @param entities 實體數組
+   * @param entityManager 可選的 EntityManager 實例
+   * @returns 保存的實體 ID 數組
+   */
+  async batchSave(
+    entities: Aggregate[],
+    entityManager?: EntityManager,
+  ): Promise<number[]> {
+    const records = entities.map((entity) => this.mapper.toPersistence(entity));
+  
+    const repository = entityManager
+      ? entityManager.getRepository<DbModel>(this.getEntityTarget())
+      : this.getRepository();
+  
+    const savedRecords = await repository.save(records);
+
+    const firstEntity = entities[0];
+    // prevent db lock,執行事件發佈
+    setImmediate(() => {
+      firstEntity
+        .publishEvents(this.logger, this.eventEmitter)
+        .catch((err) => this.logger.error('Error publishing events', err));
+    });
+     
+    return savedRecords.map((record) => record.id as number);
+  } 
 
   async transaction<T>(
     callback: (transactionalEntityManager: EntityManager) => Promise<T>,

@@ -69,21 +69,20 @@ export class FinancialRecordEntity extends AggregateRoot<FinancialRecordProps> {
   get note(): string {
     return this.props.note;
   }
+  get isLocked(): boolean {
+    return this.props.isLocked;
+  }
+
+  get isDeleted(): boolean {
+    return this.props.isDeleted;
+  }
 
   lock(): void {
-    // this.addEvent(
-    //   new FinancialRecordLockedDomainEvent({
-    //     aggregateId: this.id,
-    //   }),
-    // );
+    this.props.isLocked = true;
   }
 
   delete(): void {
-    // this.addEvent(
-    //   new FinancialRecordDeletedDomainEvent({
-    //     aggregateId: this.id,
-    //   }),
-    // );
+    this.props.isDeleted = true;
   }
 
   updateBasicInfo(
@@ -113,14 +112,6 @@ export class FinancialRecordEntity extends AggregateRoot<FinancialRecordProps> {
       ...props,
     } as InvoiceProps);
     this.props.invoice = newInvoice;
-    // this.addEvent(
-    //   new InvoiceUpdatedDomainEvent({
-    //     aggregateId: this.id,
-    //     invoiceNumber: newInvoice.invoiceNumber as string,
-    //     uniformInvoiceNumber: newInvoice.uniformInvoiceNumber as string,
-    //     invoiceDate: newInvoice.invoiceDate as string,
-    //   }),
-    // );
   }
 
   updateVoucher(props: VoucherProps): void {
@@ -129,13 +120,6 @@ export class FinancialRecordEntity extends AggregateRoot<FinancialRecordProps> {
       ...props,
     } as VoucherProps);
     this.props.voucher = newVoucher;
-    // this.addEvent(
-    //   new VoucherUpdatedDomainEvent({
-    //     aggregateId: this.id,
-    //     accrualVoucherNumber: newVoucher.accrualVoucherNumber as string,
-    //     actualVoucherNumber: newVoucher.actualVoucherNumber as string,
-    //   }),
-    // );
   }
 
   updateMoney(props: MoneyProps): void {

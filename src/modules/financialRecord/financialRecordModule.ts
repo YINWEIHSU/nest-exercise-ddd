@@ -4,10 +4,8 @@ import { TypeOrmFinancialRecordEntity } from './database/typeorm/typeOrmFinancia
 import { TypeOrmFinancialRecordRepositoryAdapter } from './database/financialRecordRepository';
 import { TypeOrmFinancialRecordRepositoryQueryAdapter } from './database/financialRecordQueryRepository';
 // import { CreateFinancialRecordHttpController } from './commands/create-user/createFinancialRecordHttpController';
-// import { DeleteFinancialRecordHttpController } from './commands/delete-user/delete-user.http-controller';
 import { FindFinancialRecordHttpController } from './queries/find-financial-record/findFinancialRecordHttpController';
 // import { CreateFinancialRecordService } from './commands/create-user/create-user.service';
-// import { DeleteFinancialRecordService } from './commands/delete-user/delete-user.service';
 import { FindFinancialRecordQueryHandler } from './queries/find-financial-record/findFinancialRecordQueryHandler';
 import { FindFinancialRecordsQueryHandler } from './queries/find-financial-records/findFinancialRecordsQueryHandler';
 import { FinancialRecordMapper } from './financialRecordMapper';
@@ -23,27 +21,46 @@ import { FinancialRecordIsUpdatedEventHandler } from './application/event-handle
 import { UpdateFinancialRecordHttpController } from './commands/update-financial-record/updateFinancialRecordHttpController';
 import { UpdateFinancialRecordService } from './commands/update-financial-record/updateFinancialRecordService';
 import { TypeOrmFinancialRecordLogEntity } from './database/typeorm/typeOrmFinancialRecordLogEntity';
+import { FindFinancialRecordLogHttpController } from './queries/find-financial-record-log/findFinancialRecordLogHttpController';
+import { FindFinancialRecordLogQueryHandler } from './queries/find-financial-record-log/findFinancialRecordLogQueryHandler';
+import { LockFinancialRecordsHttpController } from './commands/lock-financial-records/lockFinancialRecordsHttpController';
+import { LockFinancialRecordsService } from './commands/lock-financial-records/lockFinancialRecordsService';
+import { FinancialRecordIsBatchUpdatedEventHandler } from './application/event-handlers/financialRecordIsBatchUpdatedEventHandler';
+import { UpdateFinancialRecordsInvoiceHttpController } from './commands/update-financial-records-invoice/updateFinancialRecordsInvoiceHttpController';
+import { UpdateFinancialRecordsInvoiceService } from './commands/update-financial-records-invoice/updateFinancialRecordsInvoiceService';
+import { UpdateFinancialRecordsVoucherHttpController } from './commands/update-financial-records-voucher/updateFinancialRecordsVoucherHttpController';
+import { UpdateFinancialRecordsVoucherService } from './commands/update-financial-records-voucher/updateFinancialRecordsVoucherService';
+import { DeleteFinancialRecordsHttpController } from './commands/delete-financial-records/deleteFinancialRecordsHttpController';
+import { DeleteFinancialRecordsService } from './commands/delete-financial-records/deleteFinancialRecordsService';
 
 const httpControllers = [
   CreateFinancialRecordHttpController,
   UpdateFinancialRecordHttpController,
-  // DeleteFinancialRecordHttpController,
+  DeleteFinancialRecordsHttpController,
   FindFinancialRecordHttpController,
   FindFinancialRecordsHttpController,
+  FindFinancialRecordLogHttpController,
+  LockFinancialRecordsHttpController,
+  UpdateFinancialRecordsInvoiceHttpController,
+  UpdateFinancialRecordsVoucherHttpController
 ];
 
 const commandHandlers: Provider[] = [
   CreateFinancialRecordService,
   UpdateFinancialRecordService,
-  // DeleteFinancialRecordService,
+  DeleteFinancialRecordsService,
+  LockFinancialRecordsService,
+  UpdateFinancialRecordsInvoiceService,
+  UpdateFinancialRecordsVoucherService
 ];
 
 const queryHandlers: Provider[] = [
   FindFinancialRecordQueryHandler,
   FindFinancialRecordsQueryHandler,
+  FindFinancialRecordLogQueryHandler
 ];
 
-const eventHandlers: Provider[] = [FinancialRecordIsUpdatedEventHandler];
+const eventHandlers: Provider[] = [FinancialRecordIsUpdatedEventHandler, FinancialRecordIsBatchUpdatedEventHandler];
 
 const mappers: Provider[] = [FinancialRecordMapper];
 
