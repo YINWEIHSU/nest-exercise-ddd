@@ -1,32 +1,32 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger'
+import { PaginatedQueryRequestDto } from '@src/libs/api/paginated-query.request.dto'
+import { Transform } from 'class-transformer'
 import {
-  MaxLength,
+  IsBooleanString,
+  IsOptional,
   IsString,
   Matches,
-  IsOptional,
-  IsBooleanString,
-} from 'class-validator';
-import { Transform } from 'class-transformer';
-import { PaginatedQueryRequestDto } from '@src/libs/api/paginated-query.request.dto';
+  MaxLength,
+} from 'class-validator'
 
 export class PaginatedFinancialRecordsRequestDto extends PaginatedQueryRequestDto {
   @ApiProperty({ example: '2023-01-01', description: '查詢開始日期' })
   @MaxLength(10)
   @IsString()
   @Matches(/^\d{4}-\d{2}-\d{2}$/)
-  readonly startDate: string;
+  readonly startDate: string
 
   @ApiProperty({ example: '2023-12-31', description: '查詢結束日期' })
   @MaxLength(10)
   @IsString()
   @Matches(/^\d{4}-\d{2}-\d{2}$/)
-  readonly endDate: string;
+  readonly endDate: string
 
   @ApiProperty({ example: '發票', description: '查詢關鍵字', required: false })
   @IsOptional()
   @MaxLength(50)
   @IsString()
-  readonly queryWord?: string;
+  readonly queryWord?: string
 
   @ApiProperty({
     example: '1',
@@ -37,7 +37,7 @@ export class PaginatedFinancialRecordsRequestDto extends PaginatedQueryRequestDt
   @MaxLength(10)
   @IsString()
   @Matches(/^[0-9]*$/)
-  readonly applicationFormId?: string;
+  readonly applicationFormId?: string
 
   @ApiProperty({
     example: '1',
@@ -48,7 +48,7 @@ export class PaginatedFinancialRecordsRequestDto extends PaginatedQueryRequestDt
   @MaxLength(10)
   @IsString()
   @Matches(/^[0-9]*$/)
-  readonly mainAccountId?: string;
+  readonly mainAccountId?: string
 
   @ApiProperty({
     example: '1',
@@ -59,7 +59,7 @@ export class PaginatedFinancialRecordsRequestDto extends PaginatedQueryRequestDt
   @MaxLength(10)
   @IsString()
   @Matches(/^[0-9]*$/)
-  readonly subAccountId?: string;
+  readonly subAccountId?: string
 
   @ApiProperty({
     example: '1',
@@ -70,7 +70,7 @@ export class PaginatedFinancialRecordsRequestDto extends PaginatedQueryRequestDt
   @MaxLength(10)
   @IsString()
   @Matches(/^[0-9]*$/)
-  readonly subsidiaryId?: string;
+  readonly subsidiaryId?: string
 
   @ApiProperty({
     example: true,
@@ -80,10 +80,10 @@ export class PaginatedFinancialRecordsRequestDto extends PaginatedQueryRequestDt
   @IsOptional()
   @IsBooleanString()
   @Transform(({ value }) => {
-    if (value === 'true') return true;
-    if (value === 'false') return false;
+    if (value === 'true') return true
+    if (value === 'false') return false
   })
-  readonly hasUniformInvoice?: boolean;
+  readonly hasUniformInvoice?: boolean
 
   @ApiProperty({
     example: '1,2,3',
@@ -92,7 +92,7 @@ export class PaginatedFinancialRecordsRequestDto extends PaginatedQueryRequestDt
   })
   @IsOptional()
   @IsString()
-  readonly ids?: string;
+  readonly ids?: string
 
   @ApiProperty({
     example: 'date',
@@ -101,7 +101,7 @@ export class PaginatedFinancialRecordsRequestDto extends PaginatedQueryRequestDt
   })
   @IsOptional()
   @IsString()
-  readonly sortBy?: string = 'date';
+  readonly sortBy?: string = 'date'
 
   @ApiProperty({
     example: 'desc',
@@ -110,5 +110,5 @@ export class PaginatedFinancialRecordsRequestDto extends PaginatedQueryRequestDt
   })
   @IsOptional()
   @IsString()
-  readonly order?: 'asc' | 'desc' = 'desc';
+  readonly order?: 'asc' | 'desc' = 'desc'
 }

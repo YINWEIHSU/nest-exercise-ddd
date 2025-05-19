@@ -1,23 +1,23 @@
-import { Command, CommandProps } from '@libs/ddd';
+import { Command, CommandProps } from '@libs/ddd'
 
 export class UpdateFinancialRecordsVoucherCommand extends Command {
-  readonly financialRecordIds: string[];
+  readonly financialRecordIds: string[]
   readonly voucherNumber: {
-    accrualVoucherNumber?: string;
-    actualVoucherNumber?: string;
-  };
+    accrualVoucherNumber?: string
+    actualVoucherNumber?: string
+  }
 
   constructor(
     props: CommandProps<UpdateFinancialRecordsVoucherCommand> & {
-      financialRecordIds: string[];
+      financialRecordIds: string[]
       voucherNumber: {
-        accrualVoucherNumber?: string;
-        actualVoucherNumber?: string;
-      };
+        accrualVoucherNumber?: string
+        actualVoucherNumber?: string
+      }
     },
   ) {
-    super(props);
-    this.financialRecordIds = props.financialRecordIds;
-    this.voucherNumber = props.voucherNumber;
+    super(props)
+    this.financialRecordIds = props.financialRecordIds
+    this.voucherNumber = props.voucherNumber
   }
 }

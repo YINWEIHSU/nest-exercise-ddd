@@ -1,8 +1,8 @@
-import { FinancialRecordUpdatedDomainEvent } from '../../domain/events/financialRecordUpdatedDomainEvent';
-import { FinancialRecordBatchUpdatedDomainEvent } from '../../domain/events/financialRecordBatchUpdatedDomainEvent';
-import { FinancialRecordRepositoryPort } from '../../database/financialRecordRepositoryPort';
-import { OnEvent } from '@nestjs/event-emitter';
 import { Inject, Injectable } from '@nestjs/common';
+import { OnEvent } from '@nestjs/event-emitter';
+import { FinancialRecordRepositoryPort } from '../../database/financialRecordRepositoryPort';
+import { FinancialRecordBatchUpdatedDomainEvent } from '../../domain/events/financialRecordBatchUpdatedDomainEvent';
+import { FinancialRecordUpdatedDomainEvent } from '../../domain/events/financialRecordUpdatedDomainEvent';
 import { FINANCIAL_RECORD_REPOSITORY } from '../../financialRecordDiTokens';
 
 @Injectable()

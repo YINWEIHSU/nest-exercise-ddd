@@ -1,6 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, ArrayNotEmpty, IsString, Matches } from 'class-validator';
-import { Transform } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger'
+import { Transform } from 'class-transformer'
+import { ArrayNotEmpty, IsArray, IsString, Matches } from 'class-validator'
 
 export class DeleteFinancialRecordsRequestDto {
   @ApiProperty({
@@ -10,5 +10,5 @@ export class DeleteFinancialRecordsRequestDto {
   })
   @IsString({ each: true })
   @Matches(/^\d+$/, { each: true })
-  readonly ids: string;
+  readonly ids: string
 }

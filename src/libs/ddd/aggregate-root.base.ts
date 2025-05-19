@@ -1,22 +1,22 @@
-import { DomainEvent } from './domain-event.base';
-import { Entity } from './entity.base';
-import { EventEmitter2 } from '@nestjs/event-emitter';
-import { LoggerPort } from '@libs/ports/logger.port';
-import { RequestContextService } from '../application/context/AppRequestContext';
+import { LoggerPort } from '@libs/ports/logger.port'
+import { EventEmitter2 } from '@nestjs/event-emitter'
+import { RequestContextService } from '../application/context/AppRequestContext'
+import { DomainEvent } from './domain-event.base'
+import { Entity } from './entity.base'
 
 export abstract class AggregateRoot<EntityProps> extends Entity<EntityProps> {
-  private _domainEvents: DomainEvent[] = [];
+  private _domainEvents: DomainEvent[] = []
 
   get domainEvents(): DomainEvent[] {
-    return this._domainEvents;
+    return this._domainEvents
   }
 
   public addEvent(domainEvent: DomainEvent): void {
-    this._domainEvents.push(domainEvent);
+    this._domainEvents.push(domainEvent)
   }
 
   public clearEvents(): void {
-    this._domainEvents = [];
+    this._domainEvents = []
   }
 
   public async publishEvents(
@@ -31,10 +31,10 @@ export abstract class AggregateRoot<EntityProps> extends Entity<EntityProps> {
           }" event published for aggregate ${this.constructor.name} : ${
             this.id
           }`,
-        );
-        return eventEmitter.emitAsync(event.constructor.name, event);
+        )
+        return eventEmitter.emitAsync(event.constructor.name, event)
       }),
-    );
-    this.clearEvents();
+    )
+    this.clearEvents()
   }
 }

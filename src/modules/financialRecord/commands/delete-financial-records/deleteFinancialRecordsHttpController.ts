@@ -1,12 +1,20 @@
-import { Body, Controller, Delete, HttpStatus, Param, Patch, Query } from '@nestjs/common';
-import { routesV1 } from '@src/config/appRoutes';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Delete,
+  HttpStatus,
+  Param,
+  Patch,
+  Query,
+} from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { DeleteFinancialRecordsCommand } from './deleteFinancialRecordsCommand';
-import { DeleteFinancialRecordsRequestDto } from './deleteFinancialRecordsRequestDto';
-import { FinancialRecordResponseDto } from '../../dtos/financialRecordResponseDto';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { routesV1 } from '@src/config/appRoutes';
 import { ApiErrorResponse } from '@src/libs/api/api-error.response';
 import { CurrentUser } from '@src/libs/decorators/user.decorator';
+import { FinancialRecordResponseDto } from '../../dtos/financialRecordResponseDto';
+import { DeleteFinancialRecordsCommand } from './deleteFinancialRecordsCommand';
+import { DeleteFinancialRecordsRequestDto } from './deleteFinancialRecordsRequestDto';
 
 @Controller(routesV1.version)
 export class DeleteFinancialRecordsHttpController {
@@ -34,7 +42,6 @@ export class DeleteFinancialRecordsHttpController {
         timestamp: Date.now(),
       },
     });
-
 
     const result: Partial<DeleteFinancialRecordsRequestDto> =
       await this.commandBus.execute(command);

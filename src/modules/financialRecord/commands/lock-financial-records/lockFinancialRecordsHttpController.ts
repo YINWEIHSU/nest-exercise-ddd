@@ -1,12 +1,12 @@
 import { Body, Controller, HttpStatus, Param, Patch } from '@nestjs/common';
-import { routesV1 } from '@src/config/appRoutes';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CommandBus } from '@nestjs/cqrs';
-import { LockFinancialRecordsCommand } from './lockFinancialRecordsCommand';
-import { LockFinancialRecordsRequestDto } from './lockFinancialRecordsRequestDto';
-import { FinancialRecordResponseDto } from '../../dtos/financialRecordResponseDto';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { routesV1 } from '@src/config/appRoutes';
 import { ApiErrorResponse } from '@src/libs/api/api-error.response';
 import { CurrentUser } from '@src/libs/decorators/user.decorator';
+import { FinancialRecordResponseDto } from '../../dtos/financialRecordResponseDto';
+import { LockFinancialRecordsCommand } from './lockFinancialRecordsCommand';
+import { LockFinancialRecordsRequestDto } from './lockFinancialRecordsRequestDto';
 
 @Controller(routesV1.version)
 export class LockFinancialRecordsHttpController {

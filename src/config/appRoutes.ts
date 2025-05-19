@@ -4,10 +4,10 @@
  */
 
 // Root
-const financialRecordRoot = 'financial-records';
+const financialRecordRoot = 'financial-records'
 
 // Api Versions
-const v1 = 'api/v1';
+const v1 = 'api/v1'
 
 export const routesV1 = {
   version: v1,
@@ -20,4 +20,4 @@ export const routesV1 = {
     invoice: `${financialRecordRoot}/invoice-info`,
     voucher: `${financialRecordRoot}/voucher-number`,
   },
-};
+}

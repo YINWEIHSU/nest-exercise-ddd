@@ -1,25 +1,25 @@
-import { Command, CommandProps } from '@libs/ddd';
+import { Command, CommandProps } from '@libs/ddd'
 
 export class UpdateFinancialRecordsInvoiceCommand extends Command {
-  readonly financialRecordIds: string[];
+  readonly financialRecordIds: string[]
   readonly invoiceInfo: {
-    uniformInvoiceNumber: string;
-    invoiceNumber: string;
-    invoiceDate: string;
-  };
+    uniformInvoiceNumber: string
+    invoiceNumber: string
+    invoiceDate: string
+  }
 
   constructor(
     props: CommandProps<UpdateFinancialRecordsInvoiceCommand> & {
-      financialRecordIds: string[];
+      financialRecordIds: string[]
       invoiceInfo: {
-        uniformInvoiceNumber: string;
-        invoiceNumber: string;
-        invoiceDate: string;
-      };
+        uniformInvoiceNumber: string
+        invoiceNumber: string
+        invoiceDate: string
+      }
     },
   ) {
-    super(props);
-    this.financialRecordIds = props.financialRecordIds;
-    this.invoiceInfo = props.invoiceInfo;
+    super(props)
+    this.financialRecordIds = props.financialRecordIds
+    this.invoiceInfo = props.invoiceInfo
   }
 }

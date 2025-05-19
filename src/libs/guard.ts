@@ -4,30 +4,30 @@ export class Guard {
    */
   static isEmpty(value: unknown): boolean {
     if (typeof value === 'number' || typeof value === 'boolean') {
-      return false;
+      return false
     }
     if (typeof value === 'undefined' || value === null) {
-      return true;
+      return true
     }
     if (value instanceof Date) {
-      return false;
+      return false
     }
     if (value instanceof Object && !Object.keys(value).length) {
-      return true;
+      return true
     }
     if (Array.isArray(value)) {
       if (value.length === 0) {
-        return true;
+        return true
       }
       if (value.every((item) => Guard.isEmpty(item))) {
-        return true;
+        return true
       }
     }
     if (value === '') {
-      return true;
+      return true
     }
 
-    return false;
+    return false
   }
 
   /**
@@ -39,22 +39,18 @@ export class Guard {
     max: number,
   ): boolean {
     if (Guard.isEmpty(value)) {
-      throw new Error(
-        'Cannot check length of a value. Provided value is empty',
-      );
+      throw new Error('Cannot check length of a value. Provided value is empty')
     }
     const valueLength =
-      typeof value === 'number'
-        ? Number(value).toString().length
-        : value.length;
+      typeof value === 'number' ? Number(value).toString().length : value.length
     if (valueLength >= min && valueLength <= max) {
-      return true;
+      return true
     }
-    return false;
+    return false
   }
 
   static isDateFormat(date: string): boolean {
-    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-    return dateRegex.test(date);
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/
+    return dateRegex.test(date)
   }
 }

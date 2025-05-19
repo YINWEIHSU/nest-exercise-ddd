@@ -1,32 +1,34 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
-import { UpdateFinancialRecordsInvoiceCommand } from './updateFinancialRecordsInvoiceCommand';
-import { FinancialRecordBatchUpdatedDomainEvent } from '../../domain/events/financialRecordBatchUpdatedDomainEvent';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { TypeOrmFinancialRecordRepositoryAdapter } from '../../database/financialRecordRepository';
+import { FinancialRecordBatchUpdatedDomainEvent } from '../../domain/events/financialRecordBatchUpdatedDomainEvent';
 import { FINANCIAL_RECORD_REPOSITORY } from '../../financialRecordDiTokens';
+import { UpdateFinancialRecordsInvoiceCommand } from './updateFinancialRecordsInvoiceCommand';
 
 @CommandHandler(UpdateFinancialRecordsInvoiceCommand)
 export class UpdateFinancialRecordsInvoiceService
-  
-  implements ICommandHandler<UpdateFinancialRecordsInvoiceCommand, object> {
-    constructor(
-      @Inject(FINANCIAL_RECORD_REPOSITORY)
-      private readonly financialRecordRepo: TypeOrmFinancialRecordRepositoryAdapter,
-
-    ) {}
+  implements ICommandHandler<UpdateFinancialRecordsInvoiceCommand, object>
+{
+  constructor(
+    @Inject(FINANCIAL_RECORD_REPOSITORY)
+    private readonly financialRecordRepo: TypeOrmFinancialRecordRepositoryAdapter,
+  ) {}
 
   async execute(
     command: UpdateFinancialRecordsInvoiceCommand,
   ): Promise<object> {
     //找出特定的財務紀錄
-    const financialRecords = await this.financialRecordRepo.findByIds(command.financialRecordIds);
+    const financialRecords = await this.financialRecordRepo.findByIds(
+      command.financialRecordIds,
+    );
     const oldValues = financialRecords.map((financialRecord) => {
       return {
         id: financialRecord.id,
         invoiceNumber: financialRecord.invoice?.invoiceNumber,
         uniformInvoiceNumber: financialRecord.invoice?.uniformInvoiceNumber,
         invoiceDate: financialRecord.invoice?.invoiceDate,
-      }})
+      };
+    });
     //將發票資訊更新到財務紀錄實體上
     financialRecords.forEach((financialRecord) => {
       financialRecord.updateInvoice(command.invoiceInfo);
@@ -42,16 +44,16 @@ export class UpdateFinancialRecordsInvoiceService
             userId: command.metadata.userId as string,
             oldValues: oldValues,
             newValues: command.invoiceInfo,
-            changeReason: "更新發票資訊",
-          }),  
+            changeReason: '更新發票資訊',
+          }),
         );
       }
       //執行批次更新,此時才開始進行資料庫持久化
-     await this.financialRecordRepo.batchSave(financialRecords, entityManager);
+      await this.financialRecordRepo.batchSave(financialRecords, entityManager);
     });
 
     return {
-      "message": "成功更新發票資訊"
+      message: '成功更新發票資訊',
     };
   }
 }

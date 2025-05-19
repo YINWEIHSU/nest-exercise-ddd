@@ -1,9 +1,9 @@
-import { ValueObject } from '@libs/ddd';
-import { Guard } from '@libs/guard';
+import { ValueObject } from '@libs/ddd'
 import {
-  ArgumentOutOfRangeException,
   ArgumentInvalidException,
-} from '@libs/exceptions';
+  ArgumentOutOfRangeException,
+} from '@libs/exceptions'
+import { Guard } from '@libs/guard'
 
 /** Note:
  * Value Objects with multiple properties can contain
@@ -11,22 +11,22 @@ import {
  * */
 
 export interface InvoiceProps {
-  invoiceNumber?: string;
-  uniformInvoiceNumber?: string;
-  invoiceDate?: string;
+  invoiceNumber?: string
+  uniformInvoiceNumber?: string
+  invoiceDate?: string
 }
 
 export class Invoice extends ValueObject<InvoiceProps> {
   get invoiceNumber(): string | undefined {
-    return this.props.invoiceNumber;
+    return this.props.invoiceNumber
   }
 
   get uniformInvoiceNumber(): string | undefined {
-    return this.props.uniformInvoiceNumber;
+    return this.props.uniformInvoiceNumber
   }
 
   get invoiceDate(): string | undefined {
-    return this.props.invoiceDate;
+    return this.props.invoiceDate
   }
 
   /**
@@ -37,14 +37,20 @@ export class Invoice extends ValueObject<InvoiceProps> {
    * a request) sacrificing some security for performance and convenience.
    */
   protected validate(props: InvoiceProps): void {
-    if (props.invoiceNumber && !Guard.lengthIsBetween(props.invoiceNumber, 2, 15)) {
-      throw new ArgumentOutOfRangeException('country is out of range');
+    if (
+      props.invoiceNumber &&
+      !Guard.lengthIsBetween(props.invoiceNumber, 2, 15)
+    ) {
+      throw new ArgumentOutOfRangeException('country is out of range')
     }
-    if (props.uniformInvoiceNumber && !Guard.lengthIsBetween(props.uniformInvoiceNumber, 2, 15)) {
-      throw new ArgumentOutOfRangeException('street is out of range');
+    if (
+      props.uniformInvoiceNumber &&
+      !Guard.lengthIsBetween(props.uniformInvoiceNumber, 2, 15)
+    ) {
+      throw new ArgumentOutOfRangeException('street is out of range')
     }
     if (props.invoiceDate && !Guard.isDateFormat(props.invoiceDate)) {
-      throw new ArgumentInvalidException('postalCode is out of range');
+      throw new ArgumentInvalidException('postalCode is out of range')
     }
   }
 }

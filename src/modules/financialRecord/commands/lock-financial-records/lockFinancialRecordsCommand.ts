@@ -1,15 +1,14 @@
-import { Command, CommandProps } from '@libs/ddd';
-
+import { Command, CommandProps } from '@libs/ddd'
 
 export class LockFinancialRecordsCommand extends Command {
-  readonly financialRecordIds: string[];
+  readonly financialRecordIds: string[]
 
   constructor(
     props: CommandProps<LockFinancialRecordsCommand> & {
-      financialRecordIds: string[];
+      financialRecordIds: string[]
     },
   ) {
-    super(props);
-    this.financialRecordIds = props.financialRecordIds;
+    super(props)
+    this.financialRecordIds = props.financialRecordIds
   }
 }

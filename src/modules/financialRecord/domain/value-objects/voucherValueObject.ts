@@ -1,6 +1,6 @@
-import { ValueObject } from '@libs/ddd';
-import { Guard } from '@libs/guard';
-import { ArgumentOutOfRangeException } from '@libs/exceptions';
+import { ValueObject } from '@libs/ddd'
+import { ArgumentOutOfRangeException } from '@libs/exceptions'
+import { Guard } from '@libs/guard'
 
 /** Note:
  * Value Objects with multiple properties can contain
@@ -8,17 +8,17 @@ import { ArgumentOutOfRangeException } from '@libs/exceptions';
  * */
 
 export interface VoucherProps {
-  accrualVoucherNumber?: string;
-  actualVoucherNumber?: string;
+  accrualVoucherNumber?: string
+  actualVoucherNumber?: string
 }
 
 export class Voucher extends ValueObject<VoucherProps> {
   get accrualVoucherNumber(): string | undefined {
-    return this.props.accrualVoucherNumber;
+    return this.props.accrualVoucherNumber
   }
 
   get actualVoucherNumber(): string | undefined {
-    return this.props.actualVoucherNumber;
+    return this.props.actualVoucherNumber
   }
 
   /**
@@ -29,11 +29,17 @@ export class Voucher extends ValueObject<VoucherProps> {
    * a request) sacrificing some security for performance and convenience.
    */
   protected validate(props: VoucherProps): void {
-    if (props.accrualVoucherNumber && !Guard.lengthIsBetween(props.accrualVoucherNumber, 2, 15)) {
-      throw new ArgumentOutOfRangeException('accrual number is out of range');
+    if (
+      props.accrualVoucherNumber &&
+      !Guard.lengthIsBetween(props.accrualVoucherNumber, 2, 15)
+    ) {
+      throw new ArgumentOutOfRangeException('accrual number is out of range')
     }
-    if (props.actualVoucherNumber && !Guard.lengthIsBetween(props.actualVoucherNumber, 2, 15)) {
-      throw new ArgumentOutOfRangeException('actual number is out of range');
+    if (
+      props.actualVoucherNumber &&
+      !Guard.lengthIsBetween(props.actualVoucherNumber, 2, 15)
+    ) {
+      throw new ArgumentOutOfRangeException('actual number is out of range')
     }
   }
 }

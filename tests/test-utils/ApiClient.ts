@@ -1,12 +1,12 @@
-import { routesV1 } from '@src/config/appRoutes';
-import { IdResponse } from '@src/libs/api/id.response.dto';
-import { CreateFinancialRecordRequestDto } from '@src/modules/financialRecord/commands/create-financial-record/createFinancialRecordRequestDto';
+import { routesV1 } from '@src/config/appRoutes'
+import { IdResponse } from '@src/libs/api/id.response.dto'
+import { CreateFinancialRecordRequestDto } from '@src/modules/financialRecord/commands/create-financial-record/createFinancialRecordRequestDto'
 // import { UserPaginatedResponseDto } from '@src/modules/user/dtos/user.paginated.response.dto';
-import { getTestServer } from '@tests/setup/jestSetupAfterEnv';
+import { getTestServer } from '@tests/setup/jestSetupAfterEnv'
 
 export class ApiClient {
-  private url = `/${routesV1.version}/${routesV1.financialRecord.root}`;
-  private app = getTestServer().serverApplication;
+  private url = `/${routesV1.version}/${routesV1.financialRecord.root}`
+  private app = getTestServer().serverApplication
 
   async createFinancialRecord(
     dto: CreateFinancialRecordRequestDto,
@@ -15,9 +15,9 @@ export class ApiClient {
       method: 'POST',
       url: this.url,
       payload: dto,
-    });
+    })
 
-    return JSON.parse(response.payload) as IdResponse;
+    return JSON.parse(response.payload) as IdResponse
   }
 
   // async deleteUser(id: string): Promise<void> {

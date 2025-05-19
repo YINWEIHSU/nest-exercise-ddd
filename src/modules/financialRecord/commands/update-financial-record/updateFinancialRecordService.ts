@@ -1,10 +1,10 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
-import { UpdateFinancialRecordCommand } from './updateFinancialRecordCommand';
-import { FinancialRecordEntity } from '../../domain/financialRecordEntity';
-import { FinancialRecordUpdatedDomainEvent } from '../../domain/events/financialRecordUpdatedDomainEvent';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { TypeOrmFinancialRecordRepositoryAdapter } from '../../database/financialRecordRepository';
+import { FinancialRecordUpdatedDomainEvent } from '../../domain/events/financialRecordUpdatedDomainEvent';
+import { FinancialRecordEntity } from '../../domain/financialRecordEntity';
 import { FINANCIAL_RECORD_REPOSITORY } from '../../financialRecordDiTokens';
+import { UpdateFinancialRecordCommand } from './updateFinancialRecordCommand';
 import { UpdateFinancialRecordRequestDto } from './updateFinancialRecordRequestDto';
 
 @CommandHandler(UpdateFinancialRecordCommand)

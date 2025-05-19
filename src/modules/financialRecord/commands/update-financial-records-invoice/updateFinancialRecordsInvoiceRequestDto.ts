@@ -1,15 +1,15 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger'
+import { Type } from 'class-transformer'
 import {
-  Min,
-  IsInt,
-  IsArray,
   ArrayNotEmpty,
-  ValidateNested,
-  IsString,
-  IsNotEmpty,
+  IsArray,
   IsDateString,
-} from 'class-validator';
-import { Type } from 'class-transformer';
+  IsInt,
+  IsNotEmpty,
+  IsString,
+  Min,
+  ValidateNested,
+} from 'class-validator'
 
 class InvoiceInfoDto {
   @ApiProperty({
@@ -18,7 +18,7 @@ class InvoiceInfoDto {
   })
   @IsString()
   @IsNotEmpty()
-  uniformInvoiceNumber: string;
+  uniformInvoiceNumber: string
 
   @ApiProperty({
     example: '123123123125',
@@ -26,14 +26,14 @@ class InvoiceInfoDto {
   })
   @IsString()
   @IsNotEmpty()
-  invoiceNumber: string;
+  invoiceNumber: string
 
   @ApiProperty({
     example: '2025-01-01',
     description: '發票日期',
   })
   @IsDateString()
-  invoiceDate: string;
+  invoiceDate: string
 }
 
 export class UpdateFinancialRecordsInvoiceRequestDto {
@@ -46,7 +46,7 @@ export class UpdateFinancialRecordsInvoiceRequestDto {
   @ArrayNotEmpty()
   @IsInt({ each: true })
   @Min(1, { each: true })
-  financialRecordIds: string[];
+  financialRecordIds: string[]
 
   @ApiProperty({
     description: '發票資訊',
@@ -54,5 +54,5 @@ export class UpdateFinancialRecordsInvoiceRequestDto {
   })
   @ValidateNested()
   @Type(() => InvoiceInfoDto)
-  invoiceInfo: InvoiceInfoDto;
+  invoiceInfo: InvoiceInfoDto
 }

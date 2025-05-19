@@ -1,14 +1,14 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger'
+import { Type } from 'class-transformer'
 import {
-  Min,
-  IsInt,
-  IsArray,
   ArrayNotEmpty,
-  ValidateNested,
+  IsArray,
+  IsInt,
   IsOptional,
   IsString,
-} from 'class-validator';
-import { Type } from 'class-transformer';
+  Min,
+  ValidateNested,
+} from 'class-validator'
 
 class VoucherNumberDto {
   @ApiProperty({
@@ -18,7 +18,7 @@ class VoucherNumberDto {
   })
   @IsOptional()
   @IsString()
-  accrualVoucherNumber?: string;
+  accrualVoucherNumber?: string
 
   @ApiProperty({
     example: '23333333333',
@@ -27,7 +27,7 @@ class VoucherNumberDto {
   })
   @IsOptional()
   @IsString()
-  actualVoucherNumber?: string;
+  actualVoucherNumber?: string
 }
 
 export class UpdateFinancialRecordsVoucherRequestDto {
@@ -40,7 +40,7 @@ export class UpdateFinancialRecordsVoucherRequestDto {
   @ArrayNotEmpty()
   @IsInt({ each: true })
   @Min(1, { each: true })
-  financialRecordIds: string[];
+  financialRecordIds: string[]
 
   @ApiProperty({
     description: '傳票號碼資訊',
@@ -48,5 +48,5 @@ export class UpdateFinancialRecordsVoucherRequestDto {
   })
   @ValidateNested()
   @Type(() => VoucherNumberDto)
-  voucherNumber: VoucherNumberDto;
+  voucherNumber: VoucherNumberDto
 }

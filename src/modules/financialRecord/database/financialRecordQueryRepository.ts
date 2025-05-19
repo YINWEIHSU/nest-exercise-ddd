@@ -1,8 +1,8 @@
-import { Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
-import { TypeOrmFinancialRecordEntity } from './typeorm/typeOrmFinancialRecordEntity';
 import { Nullable } from '@libs/types';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { TypeOrmFinancialRecordEntity } from './typeorm/typeOrmFinancialRecordEntity';
 
 @Injectable()
 export class TypeOrmFinancialRecordRepositoryQueryAdapter {

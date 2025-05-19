@@ -6,6 +6,6 @@
  * of a class.
  */
 export function frozen(constructor: Function): void {
-  Object.freeze(constructor);
-  Object.freeze(constructor.prototype);
+  Object.freeze(constructor)
+  Object.freeze(constructor.prototype)
 }

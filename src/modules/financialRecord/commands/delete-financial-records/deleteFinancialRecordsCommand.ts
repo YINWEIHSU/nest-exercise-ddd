@@ -1,15 +1,14 @@
-import { Command, CommandProps } from '@libs/ddd';
-
+import { Command, CommandProps } from '@libs/ddd'
 
 export class DeleteFinancialRecordsCommand extends Command {
-  readonly ids: string[];
+  readonly ids: string[]
 
   constructor(
     props: CommandProps<DeleteFinancialRecordsCommand> & {
-      ids: string[];
+      ids: string[]
     },
   ) {
-    super(props);
-    this.ids = props.ids;
+    super(props)
+    this.ids = props.ids
   }
 }

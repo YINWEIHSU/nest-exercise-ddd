@@ -1,10 +1,10 @@
-import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { Inject } from '@nestjs/common';
 import { QueryBase } from '@libs/ddd/query.base';
-import { TypeOrmFinancialRecordEntity } from '../../database/typeorm/typeOrmFinancialRecordEntity';
-import { TypeOrmFinancialRecordRepositoryQueryAdapter } from '../../database/financialRecordQueryRepository';
-import { FINANCIAL_RECORD_QUERY_REPOSITORY } from '../../financialRecordDiTokens';
 import { Nullable } from '@libs/types';
+import { Inject } from '@nestjs/common';
+import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
+import { TypeOrmFinancialRecordRepositoryQueryAdapter } from '../../database/financialRecordQueryRepository';
+import { TypeOrmFinancialRecordEntity } from '../../database/typeorm/typeOrmFinancialRecordEntity';
+import { FINANCIAL_RECORD_QUERY_REPOSITORY } from '../../financialRecordDiTokens';
 
 export class FindFinancialRecordQuery extends QueryBase {
   readonly id: string;

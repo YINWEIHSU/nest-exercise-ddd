@@ -1,12 +1,12 @@
 import { Body, Controller, HttpStatus, Param, Patch } from '@nestjs/common';
-import { routesV1 } from '@src/config/appRoutes';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CommandBus } from '@nestjs/cqrs';
-import { UpdateFinancialRecordsInvoiceCommand } from './updateFinancialRecordsInvoiceCommand';
-import { UpdateFinancialRecordsInvoiceRequestDto } from './updateFinancialRecordsInvoiceRequestDto';
-import { FinancialRecordResponseDto } from '../../dtos/financialRecordResponseDto';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { routesV1 } from '@src/config/appRoutes';
 import { ApiErrorResponse } from '@src/libs/api/api-error.response';
 import { CurrentUser } from '@src/libs/decorators/user.decorator';
+import { FinancialRecordResponseDto } from '../../dtos/financialRecordResponseDto';
+import { UpdateFinancialRecordsInvoiceCommand } from './updateFinancialRecordsInvoiceCommand';
+import { UpdateFinancialRecordsInvoiceRequestDto } from './updateFinancialRecordsInvoiceRequestDto';
 
 @Controller(routesV1.version)
 export class UpdateFinancialRecordsInvoiceHttpController {
@@ -22,7 +22,7 @@ export class UpdateFinancialRecordsInvoiceHttpController {
     type: ApiErrorResponse,
   })
   @Patch(routesV1.financialRecord.invoice)
-  async update (
+  async update(
     @Body() body: UpdateFinancialRecordsInvoiceRequestDto,
     @CurrentUser() userId: string,
   ): Promise<Partial<UpdateFinancialRecordsInvoiceRequestDto>> {

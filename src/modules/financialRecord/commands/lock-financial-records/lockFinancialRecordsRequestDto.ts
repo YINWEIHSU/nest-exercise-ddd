@@ -1,11 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-import {
-  Min,
-  IsInt,
-  IsArray,
-  ArrayNotEmpty,
-} from 'class-validator';
-
+import { ApiProperty } from '@nestjs/swagger'
+import { ArrayNotEmpty, IsArray, IsInt, Min } from 'class-validator'
 
 export class LockFinancialRecordsRequestDto {
   @ApiProperty({
@@ -17,5 +11,5 @@ export class LockFinancialRecordsRequestDto {
   @ArrayNotEmpty()
   @IsInt({ each: true })
   @Min(1, { each: true })
-  readonly financialRecordIds: string[];
+  readonly financialRecordIds: string[]
 }

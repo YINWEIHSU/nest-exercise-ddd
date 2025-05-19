@@ -1,28 +1,28 @@
-import { AggregateRoot } from '@libs/ddd';
-import { Mapper } from '@libs/ddd';
-import { RepositoryPort } from '@libs/ddd';
-import { ConflictException } from '@libs/exceptions';
-import { EventEmitter2 } from '@nestjs/event-emitter';
+import { AggregateRoot } from '@libs/ddd'
+import { Mapper } from '@libs/ddd'
+import { RepositoryPort } from '@libs/ddd'
+import { ConflictException } from '@libs/exceptions'
+import { EventEmitter2 } from '@nestjs/event-emitter'
 import {
-  Repository,
   DataSource,
-  QueryFailedError,
   EntityManager,
   Equal,
   FindOptionsWhere,
   In,
-} from 'typeorm';
-import { LoggerPort } from '../ports/logger.port';
-import { ObjectLiteral } from '../types';
+  QueryFailedError,
+  Repository,
+} from 'typeorm'
+import { LoggerPort } from '../ports/logger.port'
+import { ObjectLiteral } from '../types'
 
 export abstract class RepositoryBase<
   Aggregate extends AggregateRoot<any>,
   DbModel extends ObjectLiteral,
 > implements RepositoryPort<Aggregate>
 {
-  protected readonly dataSource: DataSource;
-  protected abstract getRepository(): Repository<DbModel>;
-  protected abstract getEntityTarget(): new () => DbModel;
+  protected readonly dataSource: DataSource
+  protected abstract getRepository(): Repository<DbModel>
+  protected abstract getEntityTarget(): new () => DbModel
 
   protected constructor(
     dataSource: DataSource,
@@ -30,62 +30,60 @@ export abstract class RepositoryBase<
     protected readonly eventEmitter: EventEmitter2,
     protected readonly logger: LoggerPort,
   ) {
-    this.dataSource = dataSource;
+    this.dataSource = dataSource
   }
 
   async findOneById(id: string): Promise<Aggregate | null> {
-    const repository = this.getRepository();
+    const repository = this.getRepository()
     const entity = await repository.findOne({
       where: { id: Equal(id) } as unknown as FindOptionsWhere<DbModel>,
-    });
-    return entity ? this.mapper.toDomain(entity) : null;
+    })
+    return entity ? this.mapper.toDomain(entity) : null
   }
 
   async findAll(): Promise<Aggregate[]> {
-    const repository = this.getRepository();
-    const entities = await repository.find();
-    return entities.map((entity) => this.mapper.toDomain(entity));
+    const repository = this.getRepository()
+    const entities = await repository.find()
+    return entities.map((entity) => this.mapper.toDomain(entity))
   }
 
-  async findByIds(
-    ids: string[],
-  ): Promise<Aggregate[]> {
-    const repository = this.getRepository();
+  async findByIds(ids: string[]): Promise<Aggregate[]> {
+    const repository = this.getRepository()
     const entities = await repository.findBy({
       id: In(ids),
-    } as unknown as FindOptionsWhere<DbModel>);
-    return entities.map((entity) => this.mapper.toDomain(entity));
+    } as unknown as FindOptionsWhere<DbModel>)
+    return entities.map((entity) => this.mapper.toDomain(entity))
   }
 
   async save(
     entity: Aggregate,
     entityManager?: EntityManager,
   ): Promise<number> {
-    const record = this.mapper.toPersistence(entity);
-    const recordToSave = { ...record };
+    const record = this.mapper.toPersistence(entity)
+    const recordToSave = { ...record }
 
     if (!this.isIdExist(recordToSave.id)) {
-      delete recordToSave.id;
+      delete recordToSave.id
     }
 
-    let result: DbModel;
+    let result: DbModel
     if (entityManager) {
       const repository = entityManager.getRepository<DbModel>(
         this.getEntityTarget(),
-      );
-      result = await repository.save(recordToSave);
+      )
+      result = await repository.save(recordToSave)
     } else {
-      const repository = this.getRepository();
-      result = await repository.save(recordToSave);
+      const repository = this.getRepository()
+      result = await repository.save(recordToSave)
     }
 
     // prevent db lock
     setImmediate(() => {
       entity
         .publishEvents(this.logger, this.eventEmitter)
-        .catch((err) => this.logger.error('Error publishing events', err));
-    });
-    return result.id as number;
+        .catch((err) => this.logger.error('Error publishing events', err))
+    })
+    return result.id as number
   }
   /**
    * 批量保存實體
@@ -97,24 +95,24 @@ export abstract class RepositoryBase<
     entities: Aggregate[],
     entityManager?: EntityManager,
   ): Promise<number[]> {
-    const records = entities.map((entity) => this.mapper.toPersistence(entity));
-  
+    const records = entities.map((entity) => this.mapper.toPersistence(entity))
+
     const repository = entityManager
       ? entityManager.getRepository<DbModel>(this.getEntityTarget())
-      : this.getRepository();
-  
-    const savedRecords = await repository.save(records);
+      : this.getRepository()
 
-    const firstEntity = entities[0];
+    const savedRecords = await repository.save(records)
+
+    const firstEntity = entities[0]
     // prevent db lock,執行事件發佈
     setImmediate(() => {
       firstEntity
         .publishEvents(this.logger, this.eventEmitter)
-        .catch((err) => this.logger.error('Error publishing events', err));
-    });
-     
-    return savedRecords.map((record) => record.id as number);
-  } 
+        .catch((err) => this.logger.error('Error publishing events', err))
+    })
+
+    return savedRecords.map((record) => record.id as number)
+  }
 
   async transaction<T>(
     callback: (transactionalEntityManager: EntityManager) => Promise<T>,
@@ -122,21 +120,21 @@ export abstract class RepositoryBase<
     try {
       return await this.dataSource.transaction<T>(
         async (transactionalEntityManager) => {
-          return await callback(transactionalEntityManager);
+          return await callback(transactionalEntityManager)
         },
-      );
+      )
     } catch (error) {
       if (error instanceof QueryFailedError) {
-        this.logger.error('Database transaction failed', { error });
+        this.logger.error('Database transaction failed', { error })
 
         if (
           error.message.includes('duplicate') ||
           error.message.includes('unique constraint')
         ) {
-          throw new ConflictException('資料已存在');
+          throw new ConflictException('資料已存在')
         }
       }
-      throw error;
+      throw error
     }
   }
 
@@ -144,33 +142,33 @@ export abstract class RepositoryBase<
     entity: Aggregate,
     entityManager?: EntityManager,
   ): Promise<number> {
-    const record = this.mapper.toPersistence(entity);
-    const recordToInsert = { ...record };
+    const record = this.mapper.toPersistence(entity)
+    const recordToInsert = { ...record }
 
-    delete recordToInsert.id;
+    delete recordToInsert.id
 
-    let result: DbModel;
+    let result: DbModel
     if (entityManager) {
       const repository = entityManager.getRepository<DbModel>(
         this.getEntityTarget(),
-      );
+      )
       // 先創建一個新的實體
-      const newEntity = repository.create(recordToInsert);
+      const newEntity = repository.create(recordToInsert)
       // 然後保存它
-      result = await repository.save(newEntity);
+      result = await repository.save(newEntity)
     } else {
-      const repository = this.getRepository();
-      const newEntity = repository.create(recordToInsert);
-      result = await repository.save(newEntity);
+      const repository = this.getRepository()
+      const newEntity = repository.create(recordToInsert)
+      result = await repository.save(newEntity)
     }
 
     // prevent db lock
     setImmediate(() => {
       entity
         .publishEvents(this.logger, this.eventEmitter)
-        .catch((err) => this.logger.error('Error publishing events', err));
-    });
-    return result.id as number;
+        .catch((err) => this.logger.error('Error publishing events', err))
+    })
+    return result.id as number
   }
 
   protected isIdExist(id: any): boolean {
@@ -178,7 +176,7 @@ export abstract class RepositoryBase<
       id === undefined ||
       id === null ||
       (typeof id === 'number' && isNaN(id))
-    );
+    )
   }
 
   // async findAllPaginated(

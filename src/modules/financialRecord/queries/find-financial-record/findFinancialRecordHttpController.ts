@@ -1,11 +1,11 @@
 import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
-import { routesV1 } from '@src/config/appRoutes';
 import { QueryBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { FindFinancialRecordRequestDto } from './findFinancialRecordRequestDto';
-import { FindFinancialRecordQuery } from './findFinancialRecordQueryHandler';
-import { FinancialRecordResponseDto } from '../../dtos/financialRecordResponseDto';
+import { routesV1 } from '@src/config/appRoutes';
 import { TypeOrmFinancialRecordEntity } from '../../database/typeorm/typeOrmFinancialRecordEntity';
+import { FinancialRecordResponseDto } from '../../dtos/financialRecordResponseDto';
+import { FindFinancialRecordQuery } from './findFinancialRecordQueryHandler';
+import { FindFinancialRecordRequestDto } from './findFinancialRecordRequestDto';
 
 @Controller(routesV1.version)
 export class FindFinancialRecordHttpController {

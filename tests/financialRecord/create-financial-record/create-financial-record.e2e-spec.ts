@@ -1,18 +1,18 @@
-import { defineFeature, loadFeature } from 'jest-cucumber';
-import { getConnectionPool } from '../../setup/jestSetupAfterEnv';
-import { DataSource } from 'typeorm';
-import { TestContext } from '@tests/test-utils/TestContext';
-import { IdResponse } from '@src/libs/api/id.response.dto';
+import { IdResponse } from '@src/libs/api/id.response.dto'
+import { TestContext } from '@tests/test-utils/TestContext'
+import { defineFeature, loadFeature } from 'jest-cucumber'
+import { DataSource } from 'typeorm'
+import { getConnectionPool } from '../../setup/jestSetupAfterEnv'
 import {
   CreateFinancialRecordTestContext,
   givenFinancialRecordProfileData,
   iSendARequestToCreateAFinancialRecord,
-} from '../financial-record-shared-steps';
+} from '../financial-record-shared-steps'
 // import { iReceiveAnErrorWithStatusCode } from '@tests/shared/shared-steps';
 
 const feature = loadFeature(
   'tests/financialRecord/create-financial-record/create-financial-record.feature',
-);
+)
 
 /**
  * e2e test implementing a Gherkin feature file
@@ -20,32 +20,28 @@ const feature = loadFeature(
  */
 
 defineFeature(feature, (test) => {
-  let pool: DataSource;
+  let pool: DataSource
 
   beforeAll(() => {
-    pool = getConnectionPool();
-  });
+    pool = getConnectionPool()
+  })
 
   afterEach(async () => {
-    await pool
-      .createQueryBuilder()
-      .delete()
-      .from('financial_records')
-      .execute();
-  });
+    await pool.createQueryBuilder().delete().from('financial_records').execute()
+  })
 
   test('I can create a financial record', ({ given, when, then }) => {
-    const ctx = new TestContext<CreateFinancialRecordTestContext>();
+    const ctx = new TestContext<CreateFinancialRecordTestContext>()
 
-    givenFinancialRecordProfileData(given, ctx);
+    givenFinancialRecordProfileData(given, ctx)
 
-    iSendARequestToCreateAFinancialRecord(when, ctx);
+    iSendARequestToCreateAFinancialRecord(when, ctx)
 
     then('I receive my financial record ID', () => {
-      const response = ctx.latestResponse as IdResponse;
-      expect(typeof response.id).toBe('number');
-    });
-  });
+      const response = ctx.latestResponse as IdResponse
+      expect(typeof response.id).toBe('number')
+    })
+  })
 
   // test('I try to create a financial record with invalid data', ({
   //   given,
@@ -60,4 +56,4 @@ defineFeature(feature, (test) => {
 
   //   iReceiveAnErrorWithStatusCode(then, ctx);
   // });
-});
+})
