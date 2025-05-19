@@ -7,12 +7,11 @@ import { UpdateFinancialRecordsVoucherCommand } from './updateFinancialRecordsIV
 
 @CommandHandler(UpdateFinancialRecordsVoucherCommand)
 export class UpdateFinancialRecordsVoucherService
-  implements ICommandHandler<UpdateFinancialRecordsVoucherCommand, object>
-{
+  implements ICommandHandler<UpdateFinancialRecordsVoucherCommand, object> {
   constructor(
     @Inject(FINANCIAL_RECORD_REPOSITORY)
     private readonly financialRecordRepo: TypeOrmFinancialRecordRepositoryAdapter,
-  ) {}
+  ) { }
 
   async execute(
     command: UpdateFinancialRecordsVoucherCommand,
@@ -21,6 +20,14 @@ export class UpdateFinancialRecordsVoucherService
     const financialRecords = await this.financialRecordRepo.findByIds(
       command.financialRecordIds,
     );
+    const sucessResponse = {
+      message: '成功更新傳票資訊'
+    }
+
+    if (financialRecords.length === 0) {
+      return sucessResponse;
+    }
+
     const oldValues = financialRecords.map((financialRecord) => {
       return {
         id: financialRecord.id,
@@ -46,13 +53,11 @@ export class UpdateFinancialRecordsVoucherService
             changeReason: '更新傳票資訊',
           }),
         );
+        //執行批次更新,此時才開始進行資料庫持久化
+        await this.financialRecordRepo.batchSave(financialRecords, entityManager);
       }
-      //執行批次更新,此時才開始進行資料庫持久化
-      await this.financialRecordRepo.batchSave(financialRecords, entityManager);
     });
 
-    return {
-      message: '成功更新傳票資訊',
-    };
+    return sucessResponse;
   }
 }

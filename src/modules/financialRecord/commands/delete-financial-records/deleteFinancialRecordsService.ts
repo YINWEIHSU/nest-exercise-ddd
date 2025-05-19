@@ -7,19 +7,24 @@ import { DeleteFinancialRecordsCommand } from './deleteFinancialRecordsCommand';
 
 @CommandHandler(DeleteFinancialRecordsCommand)
 export class DeleteFinancialRecordsService
-  implements ICommandHandler<DeleteFinancialRecordsCommand, object>
-{
+  implements ICommandHandler<DeleteFinancialRecordsCommand, object> {
   constructor(
     @Inject(FINANCIAL_RECORD_REPOSITORY)
     private readonly financialRecordRepo: TypeOrmFinancialRecordRepositoryAdapter,
-  ) {}
+  ) { }
 
   async execute(command: DeleteFinancialRecordsCommand): Promise<object> {
     //找出特定的財務紀錄
     const financialRecords = await this.financialRecordRepo.findByIds(
       command.ids,
     );
+    const sucessResponse = {
+      message: '成功刪除'
+    }
 
+    if (financialRecords.length === 0) {
+      return sucessResponse;
+    }
     const oldValues = financialRecords.map((financialRecord) => {
       return {
         id: financialRecord.id,
@@ -45,12 +50,11 @@ export class DeleteFinancialRecordsService
             changeReason: '刪除財務紀錄',
           }),
         );
+        //執行批次更新,此時才開始進行資料庫持久化
+        await this.financialRecordRepo.batchSave(financialRecords, entityManager);
       }
-      await this.financialRecordRepo.batchSave(financialRecords, entityManager);
     });
 
-    return {
-      message: '成功刪除',
-    };
+    return sucessResponse;
   }
 }

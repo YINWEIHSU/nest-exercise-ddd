@@ -7,20 +7,26 @@ import { UpdateFinancialRecordsInvoiceCommand } from './updateFinancialRecordsIn
 
 @CommandHandler(UpdateFinancialRecordsInvoiceCommand)
 export class UpdateFinancialRecordsInvoiceService
-  implements ICommandHandler<UpdateFinancialRecordsInvoiceCommand, object>
-{
+  implements ICommandHandler<UpdateFinancialRecordsInvoiceCommand, object> {
   constructor(
     @Inject(FINANCIAL_RECORD_REPOSITORY)
     private readonly financialRecordRepo: TypeOrmFinancialRecordRepositoryAdapter,
-  ) {}
+  ) { }
 
   async execute(
     command: UpdateFinancialRecordsInvoiceCommand,
   ): Promise<object> {
+    const sucessResponse = {
+      message: '成功更新發票資訊'
+    }
     //找出特定的財務紀錄
     const financialRecords = await this.financialRecordRepo.findByIds(
       command.financialRecordIds,
     );
+
+    if (financialRecords.length === 0) {
+      return sucessResponse;
+    }
     const oldValues = financialRecords.map((financialRecord) => {
       return {
         id: financialRecord.id,
@@ -47,13 +53,11 @@ export class UpdateFinancialRecordsInvoiceService
             changeReason: '更新發票資訊',
           }),
         );
+        //執行批次更新,此時才開始進行資料庫持久化
+        await this.financialRecordRepo.batchSave(financialRecords, entityManager);
       }
-      //執行批次更新,此時才開始進行資料庫持久化
-      await this.financialRecordRepo.batchSave(financialRecords, entityManager);
     });
 
-    return {
-      message: '成功更新發票資訊',
-    };
+    return sucessResponse;
   }
 }

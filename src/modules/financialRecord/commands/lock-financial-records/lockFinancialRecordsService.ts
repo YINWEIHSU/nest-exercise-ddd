@@ -7,18 +7,25 @@ import { LockFinancialRecordsCommand } from './lockFinancialRecordsCommand';
 
 @CommandHandler(LockFinancialRecordsCommand)
 export class LockFinancialRecordsService
-  implements ICommandHandler<LockFinancialRecordsCommand, object>
-{
+  implements ICommandHandler<LockFinancialRecordsCommand, object> {
   constructor(
     @Inject(FINANCIAL_RECORD_REPOSITORY)
     private readonly financialRecordRepo: TypeOrmFinancialRecordRepositoryAdapter,
-  ) {}
+  ) { }
 
   async execute(command: LockFinancialRecordsCommand): Promise<object> {
     //找出特定的財務紀錄
     const financialRecords = await this.financialRecordRepo.findByIds(
       command.financialRecordIds,
     );
+
+    const sucessResponse = {
+      message: '成功上鎖'
+    }
+
+    if (financialRecords.length === 0) {
+      return sucessResponse;
+    }
     const oldValues = financialRecords.map((financialRecord) => {
       return {
         id: financialRecord.id,
@@ -44,12 +51,11 @@ export class LockFinancialRecordsService
             changeReason: '上鎖',
           }),
         );
+        //執行批次更新,此時才開始進行資料庫持久化
+        await this.financialRecordRepo.batchSave(financialRecords, entityManager);
       }
-      await this.financialRecordRepo.batchSave(financialRecords, entityManager);
     });
 
-    return {
-      message: '成功上鎖',
-    };
+    return sucessResponse;
   }
 }
