@@ -1,5 +1,5 @@
-import { get } from 'env-var';
-import '../libs/utils/dotenv';
+import { get } from 'env-var'
+import '../libs/utils/dotenv'
 
 export const externalUrl = {
   apisix: {
@@ -9,4 +9,4 @@ export const externalUrl = {
   masa: {
     url: get('MASA_URL').required().asUrlString(),
   },
-};
+}

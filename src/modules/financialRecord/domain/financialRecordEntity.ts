@@ -1,33 +1,33 @@
-import { AggregateRoot, AggregateID } from '@libs/ddd';
-import { Voucher, VoucherProps } from './value-objects/voucherValueObject';
-import { Invoice, InvoiceProps } from './value-objects/invoiceValueObject';
+import { randomUUID } from 'crypto'
+import { AggregateID, AggregateRoot } from '@libs/ddd'
+import { CreateEntityProps } from '@libs/ddd/entity.base'
+import { TransactionType } from '@src/libs/enums/transactionTypeEnums'
 import {
-  FinancialRecordProps,
   CreateFinancialRecordProps,
-} from './financialRecordTypes';
-import { randomUUID } from 'crypto';
-import { TransactionType } from '@src/libs/enums/transactionTypeEnums';
-import { Money, MoneyProps } from './value-objects/moneyValueObject';
-import { CreateEntityProps } from '@libs/ddd/entity.base';
+  FinancialRecordProps,
+} from './financialRecordTypes'
+import { Invoice, InvoiceProps } from './value-objects/invoiceValueObject'
+import { Money, MoneyProps } from './value-objects/moneyValueObject'
+import { Voucher, VoucherProps } from './value-objects/voucherValueObject'
 
 export class FinancialRecordEntity extends AggregateRoot<FinancialRecordProps> {
-  protected _id: AggregateID;
+  protected _id: AggregateID
 
   constructor(props: CreateEntityProps<FinancialRecordProps>) {
-    super(props);
-    this._id = props.id;
+    super(props)
+    this._id = props.id
   }
 
   static create(create: CreateFinancialRecordProps): FinancialRecordEntity {
-    const id = randomUUID();
+    const id = randomUUID()
     const props: FinancialRecordProps = {
       ...create,
       transactionType: TransactionType.EXPENSE,
       isLocked: false,
       isDeleted: false,
-    };
-    const financialRecord = new FinancialRecordEntity({ id, props });
-    return financialRecord;
+    }
+    const financialRecord = new FinancialRecordEntity({ id, props })
+    return financialRecord
   }
 
   /* You can create getters only for the properties that you need to
@@ -36,71 +36,70 @@ export class FinancialRecordEntity extends AggregateRoot<FinancialRecordProps> {
   database or mapping a response) use .getProps() method
   defined in a EntityBase parent class */
   get id(): string {
-    return this._id;
+    return this._id
   }
 
   get money(): Money {
-    return this.props.money;
+    return this.props.money
   }
 
   get voucher(): Voucher | undefined {
-    return this.props.voucher;
+    return this.props.voucher
   }
 
   get invoice(): Invoice | undefined {
-    return this.props.invoice;
+    return this.props.invoice
   }
 
   get subsidiaryId(): string {
-    return this.props.subsidiaryId;
+    return this.props.subsidiaryId
   }
   get subAccountId(): string {
-    return this.props.subAccountId;
+    return this.props.subAccountId
   }
 
   get counterpartyId(): string {
-    return this.props.counterpartyId;
+    return this.props.counterpartyId
   }
 
   get date(): string {
-    return this.props.date;
+    return this.props.date
   }
 
   get note(): string {
-    return this.props.note;
+    return this.props.note
+  }
+  get isLocked(): boolean {
+    return this.props.isLocked
+  }
+
+  get isDeleted(): boolean {
+    return this.props.isDeleted
   }
 
   lock(): void {
-    // this.addEvent(
-    //   new FinancialRecordLockedDomainEvent({
-    //     aggregateId: this.id,
-    //   }),
-    // );
+    this.props.isLocked = true
   }
 
   delete(): void {
-    // this.addEvent(
-    //   new FinancialRecordDeletedDomainEvent({
-    //     aggregateId: this.id,
-    //   }),
-    // );
+    this.props.isDeleted = true
   }
 
   updateBasicInfo(
     props: {
-      subsidiaryId?: string;
-      subAccountId?: string;
-      counterpartyId?: string;
-      date?: string;
-      note?: string;
+      subsidiaryId?: string
+      subAccountId?: string
+      counterpartyId?: string
+      date?: string
+      note?: string
     } = {},
   ): void {
-    this.props.subsidiaryId = props.subsidiaryId || this.props.subsidiaryId;
-    this.props.subAccountId = props.subAccountId || this.props.subAccountId;
+    this.props.subsidiaryId = props.subsidiaryId || this.props.subsidiaryId
+    this.props.subAccountId = props.subAccountId || this.props.subAccountId
     this.props.counterpartyId =
-      props.counterpartyId || this.props.counterpartyId;
-    this.props.date = props.date || this.props.date;
-    this.props.note = props.note || this.props.note;
+      props.counterpartyId || this.props.counterpartyId
+    this.props.date = props.date || this.props.date
+    this.props.note = props.note || this.props.note
   }
 
   /* Update method only changes properties that we allow, in this
@@ -111,39 +110,24 @@ export class FinancialRecordEntity extends AggregateRoot<FinancialRecordProps> {
     const newInvoice = new Invoice({
       ...this.props.invoice,
       ...props,
-    } as InvoiceProps);
-    this.props.invoice = newInvoice;
-    // this.addEvent(
-    //   new InvoiceUpdatedDomainEvent({
-    //     aggregateId: this.id,
-    //     invoiceNumber: newInvoice.invoiceNumber as string,
-    //     uniformInvoiceNumber: newInvoice.uniformInvoiceNumber as string,
-    //     invoiceDate: newInvoice.invoiceDate as string,
-    //   }),
-    // );
+    } as InvoiceProps)
+    this.props.invoice = newInvoice
   }
 
   updateVoucher(props: VoucherProps): void {
     const newVoucher = new Voucher({
       ...this.props.voucher,
       ...props,
-    } as VoucherProps);
-    this.props.voucher = newVoucher;
-    // this.addEvent(
-    //   new VoucherUpdatedDomainEvent({
-    //     aggregateId: this.id,
-    //     accrualVoucherNumber: newVoucher.accrualVoucherNumber as string,
-    //     actualVoucherNumber: newVoucher.actualVoucherNumber as string,
-    //   }),
-    // );
+    } as VoucherProps)
+    this.props.voucher = newVoucher
   }
 
   updateMoney(props: MoneyProps): void {
     const newMoney = new Money({
       ...this.props.money,
       ...props,
-    } as MoneyProps);
-    this.props.money = newMoney;
+    } as MoneyProps)
+    this.props.money = newMoney
     // this.addEvent(
     //   new MoneyUpdatedDomainEvent({
     //     aggregateId: this.id,

@@ -1,13 +1,13 @@
-import { Controller, Get, HttpStatus, Query } from '@nestjs/common';
-import { routesV1 } from '@src/config/appRoutes';
-import { QueryBus } from '@nestjs/cqrs';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { PaginatedFinancialRecordsRequestDto } from './findFinancialRecordsRequestDto';
-import { FindFinancialRecordsQuery } from './findFinancialRecordsQueryHandler';
-import { PaginatedResponseDto } from '@src/libs/api/paginated.response.base';
-import { FinancialRecordDetailResponseDto } from '../../dtos/FinancialRecordDetailResponseDto';
-import { FinancialRecordsPaginatedResponseDto } from '../../dtos/financialRecordPaginatedResponseDto.ts';
-import { Paginated } from '@src/libs/ddd';
+import { Controller, Get, HttpStatus, Query } from '@nestjs/common'
+import { QueryBus } from '@nestjs/cqrs'
+import { ApiOperation, ApiResponse } from '@nestjs/swagger'
+import { routesV1 } from '@src/config/appRoutes'
+import { PaginatedResponseDto } from '@src/libs/api/paginated.response.base'
+import { Paginated } from '@src/libs/ddd'
+import { FinancialRecordDetailResponseDto } from '../../dtos/FinancialRecordDetailResponseDto'
+import { FinancialRecordsPaginatedResponseDto } from '../../dtos/financialRecordPaginatedResponseDto.ts'
+import { FindFinancialRecordsQuery } from './findFinancialRecordsQueryHandler'
+import { PaginatedFinancialRecordsRequestDto } from './findFinancialRecordsRequestDto'
 
 @Controller(routesV1.version)
 export class FindFinancialRecordsHttpController {
@@ -36,11 +36,13 @@ export class FindFinancialRecordsHttpController {
       ids: queryParams.ids,
       sortBy: queryParams.sortBy,
       order: queryParams.order,
-    });
-    const paginatedFinancialRecords: Paginated<FinancialRecordDetailResponseDto> = await this.queryBus.execute(query);
+    })
+    const paginatedFinancialRecords: Paginated<FinancialRecordDetailResponseDto> =
+      await this.queryBus.execute(query)
 
-    return new FinancialRecordsPaginatedResponseDto ({...paginatedFinancialRecords,
-      data: paginatedFinancialRecords.data
-    });
+    return new FinancialRecordsPaginatedResponseDto({
+      ...paginatedFinancialRecords,
+      data: paginatedFinancialRecords.data,
+    })
   }
 }

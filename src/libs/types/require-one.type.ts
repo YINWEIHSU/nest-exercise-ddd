@@ -6,8 +6,8 @@ export type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<
   Exclude<keyof T, Keys>
 > &
   {
-    [K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>>;
-  }[Keys];
+    [K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>>
+  }[Keys]
 
 /* Makes an interface with all optional values to accept ONLY one of them */
 export type RequireOnlyOne<T, Keys extends keyof T = keyof T> = Pick<
@@ -16,5 +16,5 @@ export type RequireOnlyOne<T, Keys extends keyof T = keyof T> = Pick<
 > &
   {
     [K in Keys]-?: Required<Pick<T, K>> &
-      Partial<Record<Exclude<Keys, K>, undefined>>;
-  }[Keys];
+      Partial<Record<Exclude<Keys, K>, undefined>>
+  }[Keys]

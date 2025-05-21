@@ -1,18 +1,18 @@
+import { ExceptionBase } from '@libs/exceptions'
 import {
   BadRequestException,
   CallHandler,
   ExecutionContext,
   Logger,
   NestInterceptor,
-} from '@nestjs/common';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { ExceptionBase } from '@libs/exceptions';
-import { RequestContextService } from '../context/AppRequestContext';
-import { ApiErrorResponse } from '@src/libs/api/api-error.response';
+} from '@nestjs/common'
+import { ApiErrorResponse } from '@src/libs/api/api-error.response'
+import { Observable, throwError } from 'rxjs'
+import { catchError } from 'rxjs/operators'
+import { RequestContextService } from '../context/AppRequestContext'
 
 export class ExceptionInterceptor implements NestInterceptor {
-  private readonly logger: Logger = new Logger(ExceptionInterceptor.name);
+  private readonly logger: Logger = new Logger(ExceptionInterceptor.name)
 
   intercept(
     _context: ExecutionContext,
@@ -24,12 +24,12 @@ export class ExceptionInterceptor implements NestInterceptor {
         if (err.status >= 400 && err.status < 500) {
           this.logger.debug(
             `[${RequestContextService.getRequestId()}] ${err.message}`,
-          );
+          )
 
           const isClassValidatorError =
             Array.isArray(err?.response?.message) &&
             typeof err?.response?.error === 'string' &&
-            err.status === 400;
+            err.status === 400
           // Transforming class-validator errors to a different format
           if (isClassValidatorError) {
             err = new BadRequestException(
@@ -40,21 +40,21 @@ export class ExceptionInterceptor implements NestInterceptor {
                 subErrors: err?.response?.message,
                 correlationId: RequestContextService.getRequestId(),
               }),
-            );
+            )
           }
         }
 
         // Adding request ID to error message
         if (!err.correlationId) {
-          err.correlationId = RequestContextService.getRequestId();
+          err.correlationId = RequestContextService.getRequestId()
         }
 
         if (err.response) {
-          err.response.correlationId = err.correlationId;
+          err.response.correlationId = err.correlationId
         }
 
-        return throwError(err);
+        return throwError(err)
       }),
-    );
+    )
   }
 }

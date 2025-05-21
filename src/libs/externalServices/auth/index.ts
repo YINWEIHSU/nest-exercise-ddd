@@ -1,3 +1,3 @@
-export * from './interfaces/authServiceInterface';
-export * from './authService';
-export * from './authModule';
+export * from './interfaces/authServiceInterface'
+export * from './authService'
+export * from './authModule'

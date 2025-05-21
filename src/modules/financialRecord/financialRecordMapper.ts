@@ -1,11 +1,11 @@
-import { Mapper } from '@libs/ddd';
-import { Money } from './domain/value-objects/moneyValueObject';
-import { Voucher } from './domain/value-objects/voucherValueObject';
-import { Invoice } from './domain/value-objects/invoiceValueObject';
-import { TypeOrmFinancialRecordEntity } from './database/typeorm/typeOrmFinancialRecordEntity';
-import { FinancialRecordEntity } from './domain/financialRecordEntity';
+import { Mapper } from '@libs/ddd'
 // import { FinancialRecordResponseDto } from './dtos/financialRecordResponseDto';
-import { Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common'
+import { TypeOrmFinancialRecordEntity } from './database/typeorm/typeOrmFinancialRecordEntity'
+import { FinancialRecordEntity } from './domain/financialRecordEntity'
+import { Invoice } from './domain/value-objects/invoiceValueObject'
+import { Money } from './domain/value-objects/moneyValueObject'
+import { Voucher } from './domain/value-objects/voucherValueObject'
 
 /**
  * Mapper constructs objects that are used in different layers:
@@ -24,7 +24,7 @@ export class FinancialRecordMapper
     >
 {
   toPersistence(entity: FinancialRecordEntity): TypeOrmFinancialRecordEntity {
-    const copy = entity.getProps();
+    const copy = entity.getProps()
     const record: TypeOrmFinancialRecordEntity = {
       id: parseInt(copy.id),
       subsidiary_id: parseInt(copy.subsidiaryId),
@@ -60,8 +60,8 @@ export class FinancialRecordMapper
       creator_id: parseInt(copy.creatorId),
       created_at: copy.createdAt,
       updated_at: copy.updatedAt,
-    };
-    return record;
+    }
+    return record
   }
 
   toDomain(record: TypeOrmFinancialRecordEntity): FinancialRecordEntity {
@@ -106,8 +106,8 @@ export class FinancialRecordMapper
         isDeleted: record.is_deleted,
         creatorId: record.creator_id.toString(),
       },
-    });
-    return entity;
+    })
+    return entity
   }
 
   // toResponse(entity: FinancialRecordEntity): FinancialRecordResponseDto {

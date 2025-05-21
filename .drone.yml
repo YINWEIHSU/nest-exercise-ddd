@@ -1,0 +1,30 @@
+workspace:
+  base: /node
+  path: src/github.com/onead/finance-system
+kind: pipeline
+type: docker
+name: tag-events
+clone:
+  depth: 50
+concurrency:
+  limit: 3
+trigger:
+  event:
+    - tag
+steps:
+  - name: fetch tag
+    image: docker:git
+    commands:
+      - git fetch --tags
+  - name: build-image-to-gar
+    image: plugins/gar
+    privileged: true
+    settings:
+      repo: prebuild-88/onead/finance-system
+      registry: asia-east1-docker.pkg.dev
+      tags:
+        - ${DRONE_TAG}
+        - latest
+        - ${DRONE_COMMIT_SHA:0:8}
+      json_key:
+        from_secret: GAR-KEY

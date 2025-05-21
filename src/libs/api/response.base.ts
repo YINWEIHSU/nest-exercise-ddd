@@ -1,10 +1,10 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IdResponse } from './id.response.dto';
+import { ApiProperty } from '@nestjs/swagger'
+import { IdResponse } from './id.response.dto'
 
 export interface BaseResponseProps {
-  id: number;
-  created_at: Date;
-  updated_at: Date;
+  id: number
+  created_at: Date
+  updated_at: Date
 }
 
 /**
@@ -14,14 +14,14 @@ export interface BaseResponseProps {
  */
 export class ResponseBase extends IdResponse {
   constructor(props: BaseResponseProps) {
-    super(props.id);
-    this.created_at = new Date(props.created_at).toISOString();
-    this.updated_at = new Date(props.updated_at).toISOString();
+    super(props.id)
+    this.created_at = new Date(props.created_at).toISOString()
+    this.updated_at = new Date(props.updated_at).toISOString()
   }
 
   @ApiProperty({ example: '2020-11-24T17:43:15.970Z' })
-  readonly created_at: string;
+  readonly created_at: string
 
   @ApiProperty({ example: '2020-11-24T17:43:15.970Z' })
-  readonly updated_at: string;
+  readonly updated_at: string
 }

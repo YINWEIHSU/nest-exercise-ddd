@@ -1,15 +1,15 @@
-import { Module } from '@nestjs/common';
-import { EventEmitterModule } from '@nestjs/event-emitter';
-import { RequestContextModule } from 'nestjs-request-context';
-import { CqrsModule } from '@nestjs/cqrs';
-import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from './libs/guards/authGuard';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from './libs/externalServices/auth/authModule';
-import { databaseConfig } from './config/databaseConfig';
-import { TypeOrmFinancialRecordEntity } from './modules/financialRecord/database/typeorm/typeOrmFinancialRecordEntity';
-import { FinancialRecordModule } from './modules/financialRecord/financialRecordModule';
-import { TypeOrmFinancialRecordLogEntity } from './modules/financialRecord/database/typeorm/typeOrmFinancialRecordLogEntity';
+import { Module } from '@nestjs/common'
+import { APP_GUARD } from '@nestjs/core'
+import { CqrsModule } from '@nestjs/cqrs'
+import { EventEmitterModule } from '@nestjs/event-emitter'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { RequestContextModule } from 'nestjs-request-context'
+import { databaseConfig } from './config/databaseConfig'
+import { AuthModule } from './libs/externalServices/auth/authModule'
+import { AuthGuard } from './libs/guards/authGuard'
+import { TypeOrmFinancialRecordEntity } from './modules/financialRecord/database/typeorm/typeOrmFinancialRecordEntity'
+import { TypeOrmFinancialRecordLogEntity } from './modules/financialRecord/database/typeorm/typeOrmFinancialRecordLogEntity'
+import { FinancialRecordModule } from './modules/financialRecord/financialRecordModule'
 
 @Module({
   imports: [
