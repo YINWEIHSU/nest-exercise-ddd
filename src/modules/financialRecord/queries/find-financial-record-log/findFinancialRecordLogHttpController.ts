@@ -8,7 +8,7 @@ import { FindFinancialRecordLogRequestDto } from './findFinancialRecordLogReques
 
 @Controller(routesV1.version)
 export class FindFinancialRecordLogHttpController {
-  constructor(private readonly queryBus: QueryBus) {}
+  constructor(private readonly queryBus: QueryBus) { }
 
   @Get(routesV1.financialRecord.log)
   @ApiOperation({ summary: 'Find Financial record log by id' })
@@ -16,7 +16,7 @@ export class FindFinancialRecordLogHttpController {
     status: HttpStatus.OK,
     type: FinancialRecordLogResponseDto,
   })
-  async findFinancialRecord(
+  async findFinancialRecordLog(
     @Param() params: FindFinancialRecordLogRequestDto,
   ): Promise<any> {
     const query = new FindFinancialRecordLogQuery({
