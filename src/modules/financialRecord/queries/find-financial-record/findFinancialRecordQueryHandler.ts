@@ -1,17 +1,17 @@
-import { QueryBase } from '@libs/ddd/query.base';
-import { Nullable } from '@libs/types';
-import { Inject } from '@nestjs/common';
-import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { TypeOrmFinancialRecordRepositoryQueryAdapter } from '../../database/financialRecordQueryRepository';
-import { TypeOrmFinancialRecordEntity } from '../../database/typeorm/typeOrmFinancialRecordEntity';
-import { FINANCIAL_RECORD_QUERY_REPOSITORY } from '../../financialRecordDiTokens';
+import { QueryBase } from '@libs/ddd/query.base'
+import { Nullable } from '@libs/types'
+import { Inject } from '@nestjs/common'
+import { IQueryHandler, QueryHandler } from '@nestjs/cqrs'
+import { TypeOrmFinancialRecordRepositoryQueryAdapter } from '../../database/financialRecordQueryRepository'
+import { TypeOrmFinancialRecordEntity } from '../../database/typeorm/typeOrmFinancialRecordEntity'
+import { FINANCIAL_RECORD_QUERY_REPOSITORY } from '../../financialRecordDiTokens'
 
 export class FindFinancialRecordQuery extends QueryBase {
-  readonly id: string;
+  readonly id: string
 
   constructor(props: FindFinancialRecordQuery) {
-    super();
-    this.id = props.id;
+    super()
+    this.id = props.id
   }
 }
 
@@ -37,7 +37,7 @@ export class FindFinancialRecordQueryHandler
   async execute(
     query: FindFinancialRecordQuery,
   ): Promise<Nullable<TypeOrmFinancialRecordEntity>> {
-    const entity = await this.repository.findOneById(query.id);
-    return entity;
+    const entity = await this.repository.findOneById(query.id)
+    return entity
   }
 }

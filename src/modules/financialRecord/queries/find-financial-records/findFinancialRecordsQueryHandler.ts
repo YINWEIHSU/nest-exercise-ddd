@@ -1,78 +1,78 @@
-import { Paginated } from '@libs/ddd';
-import { PaginatedParams, PaginatedQueryBase } from '@libs/ddd/query.base';
-import { Nullable } from '@libs/types';
-import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { InjectDataSource } from '@nestjs/typeorm';
-import { PaginatedResponseDto } from '@src/libs/api/paginated.response.base.js';
-import { TransactionType } from '@src/libs/enums/transactionTypeEnums';
-import * as dayjs from 'dayjs';
-import { DataSource } from 'typeorm';
-import { FinancialRecordDetailResponseDto } from '../../dtos/financialRecordDetailResponseDto';
+import { Paginated } from '@libs/ddd'
+import { PaginatedParams, PaginatedQueryBase } from '@libs/ddd/query.base'
+import { Nullable } from '@libs/types'
+import { IQueryHandler, QueryHandler } from '@nestjs/cqrs'
+import { InjectDataSource } from '@nestjs/typeorm'
+import { PaginatedResponseDto } from '@src/libs/api/paginated.response.base.js'
+import { TransactionType } from '@src/libs/enums/transactionTypeEnums'
+import * as dayjs from 'dayjs'
+import { DataSource } from 'typeorm'
+import { FinancialRecordDetailResponseDto } from '../../dtos/financialRecordDetailResponseDto'
 
 interface FinancialRecordRawData {
-  id: number;
-  subsidiaryId: number;
-  subsidiaryName: string;
-  transactionType: TransactionType;
-  counterpartyId: number;
-  counterpartyName: string;
-  identificationNumber: string;
-  applicationFormName: string;
-  counterpartyEntityType: string;
-  registeredAddress: string;
-  mainAccountId: number;
-  mainAccountName: string;
-  subAccountId: number;
-  subAccountName: string;
-  applicationFormId: number;
-  date: string;
-  currencyCode: string;
-  exchangeRate: string;
-  adjustedExchangeRate: string;
-  amount: string;
-  adjustedAmount: string;
-  twdAmount: string;
-  adjustedTwdAmount: string;
-  accrualVoucherNumber: string;
-  actualVoucherNumber: string;
-  invoiceNumber: string;
-  uniformInvoiceNumber: string;
-  invoiceDate: string;
-  note: string;
-  isLocked: number;
-  isDeleted: number;
-  creatorId: number;
-  creatorName: string;
-  created_at: Date;
-  updated_at: Date;
+  id: number
+  subsidiaryId: number
+  subsidiaryName: string
+  transactionType: TransactionType
+  counterpartyId: number
+  counterpartyName: string
+  identificationNumber: string
+  applicationFormName: string
+  counterpartyEntityType: string
+  registeredAddress: string
+  mainAccountId: number
+  mainAccountName: string
+  subAccountId: number
+  subAccountName: string
+  applicationFormId: number
+  date: string
+  currencyCode: string
+  exchangeRate: string
+  adjustedExchangeRate: string
+  amount: string
+  adjustedAmount: string
+  twdAmount: string
+  adjustedTwdAmount: string
+  accrualVoucherNumber: string
+  actualVoucherNumber: string
+  invoiceNumber: string
+  uniformInvoiceNumber: string
+  invoiceDate: string
+  note: string
+  isLocked: number
+  isDeleted: number
+  creatorId: number
+  creatorName: string
+  created_at: Date
+  updated_at: Date
 }
 
 interface CountResult {
-  count: string;
+  count: string
 }
 
 export class FindFinancialRecordsQuery extends PaginatedQueryBase {
-  readonly startDate: string;
-  readonly endDate: string;
-  readonly queryWord?: string;
-  readonly ids?: string;
-  readonly applicationFormId?: string;
-  readonly mainAccountId?: string;
-  readonly subAccountId?: string;
-  readonly subsidiaryId?: string;
-  readonly hasUniformInvoice?: boolean;
+  readonly startDate: string
+  readonly endDate: string
+  readonly queryWord?: string
+  readonly ids?: string
+  readonly applicationFormId?: string
+  readonly mainAccountId?: string
+  readonly subAccountId?: string
+  readonly subsidiaryId?: string
+  readonly hasUniformInvoice?: boolean
 
   constructor(props: PaginatedParams<FindFinancialRecordsQuery>) {
-    super(props);
-    this.ids = props.ids;
-    this.startDate = props.startDate;
-    this.endDate = props.endDate;
-    this.queryWord = props.queryWord;
-    this.applicationFormId = props.applicationFormId;
-    this.mainAccountId = props.mainAccountId;
-    this.subAccountId = props.subAccountId;
-    this.subsidiaryId = props.subsidiaryId;
-    this.hasUniformInvoice = props.hasUniformInvoice;
+    super(props)
+    this.ids = props.ids
+    this.startDate = props.startDate
+    this.endDate = props.endDate
+    this.queryWord = props.queryWord
+    this.applicationFormId = props.applicationFormId
+    this.mainAccountId = props.mainAccountId
+    this.subAccountId = props.subAccountId
+    this.subsidiaryId = props.subsidiaryId
+    this.hasUniformInvoice = props.hasUniformInvoice
   }
 }
 
@@ -166,54 +166,54 @@ export class FindFinancialRecordsQueryHandler
           'creator',
           'creator.id = fr.creator_id',
         )
-        .where('fr.is_deleted = :is_deleted', { is_deleted: false });
+        .where('fr.is_deleted = :is_deleted', { is_deleted: false })
 
       // 建立查詢條件
       if (query.ids && query.ids.length > 0) {
-        queryBuilder.andWhere('fr.id IN (:...ids)', { ids: query.ids });
+        queryBuilder.andWhere('fr.id IN (:...ids)', { ids: query.ids })
       }
 
       if (query.startDate && query.endDate) {
         queryBuilder.andWhere('DATE(fr.date) BETWEEN :startDate AND :endDate', {
           startDate: dayjs(query.startDate).format(),
           endDate: dayjs(query.endDate).format(),
-        });
+        })
       }
 
       if (query.subAccountId) {
         queryBuilder.andWhere('fr.sub_account_id = :subAccountId', {
           subAccountId: query.subAccountId,
-        });
+        })
       }
 
       if (query.subsidiaryId) {
         queryBuilder.andWhere('fr.subsidiary_id = :subsidiaryId', {
           subsidiaryId: query.subsidiaryId,
-        });
+        })
       }
 
       if (query.hasUniformInvoice === true) {
-        queryBuilder.andWhere('fr.invoice_date IS NOT NULL');
+        queryBuilder.andWhere('fr.invoice_date IS NOT NULL')
       } else if (query.hasUniformInvoice === false) {
-        queryBuilder.andWhere('fr.invoice_date IS NULL');
+        queryBuilder.andWhere('fr.invoice_date IS NULL')
       }
 
       if (query.mainAccountId) {
         queryBuilder.andWhere('sub_account.main_account_id = :mainAccountId', {
           mainAccountId: query.mainAccountId,
-        });
+        })
       }
 
       if (query.applicationFormId) {
         queryBuilder.andWhere(
           'sub_account.application_form_id = :applicationFormId',
           { applicationFormId: query.applicationFormId },
-        );
+        )
       }
 
       // 處理關鍵字搜尋
       if (query.queryWord && query.queryWord.trim() !== '') {
-        const keyword = `%${query.queryWord.trim()}%`;
+        const keyword = `%${query.queryWord.trim()}%`
         queryBuilder.andWhere(
           `(
             fr.invoice_number LIKE :keyword OR
@@ -231,79 +231,79 @@ export class FindFinancialRecordsQueryHandler
             CONCAT(creator.firstname, ' ', creator.lastname) LIKE :keyword
           )`,
           { keyword },
-        );
+        )
       }
 
       // 處理排序
       if (query.sortBy && query.order) {
         const snakeCaseSortBy = query.sortBy
           .replace(/([A-Z])/g, '_$1')
-          .toLowerCase();
-        let sortByRelation;
+          .toLowerCase()
+        let sortByRelation
         if (snakeCaseSortBy === 'sub_account_name') {
-          sortByRelation = 'sub_account.name';
+          sortByRelation = 'sub_account.name'
         }
         if (snakeCaseSortBy === 'main_account_name') {
-          sortByRelation = 'main_account.name';
+          sortByRelation = 'main_account.name'
         }
         if (snakeCaseSortBy === 'subsidiary_name') {
-          sortByRelation = 'subsidiary.name';
+          sortByRelation = 'subsidiary.name'
         }
         if (snakeCaseSortBy === 'counterparty_name') {
-          sortByRelation = 'counterparty.name';
+          sortByRelation = 'counterparty.name'
         }
         if (snakeCaseSortBy === 'identification_number') {
-          sortByRelation = 'counterparty.identity_number';
+          sortByRelation = 'counterparty.identity_number'
         }
         if (snakeCaseSortBy === 'registered_address') {
-          sortByRelation = 'counterparty.address';
+          sortByRelation = 'counterparty.address'
         }
         if (snakeCaseSortBy === 'counterparty_entity_type') {
-          sortByRelation = 'counterparty.type';
+          sortByRelation = 'counterparty.type'
         }
         if (snakeCaseSortBy === 'application_form_name') {
-          sortByRelation = 'application_form.name';
+          sortByRelation = 'application_form.name'
         }
         if (snakeCaseSortBy === 'creator_name') {
-          sortByRelation = 'creator.firstname';
+          sortByRelation = 'creator.firstname'
         }
         if (sortByRelation) {
           queryBuilder.orderBy(
             `${sortByRelation}`,
             query.order.toUpperCase() as 'ASC' | 'DESC',
-          );
+          )
         } else {
           queryBuilder.orderBy(
             `fr.${snakeCaseSortBy}`,
             query.order.toUpperCase() as 'ASC' | 'DESC',
-          );
+          )
         }
       }
 
       // clone for創建計數查詢
-      const countQueryBuilder = queryBuilder.clone();
+      const countQueryBuilder = queryBuilder.clone()
 
       // 獲取總筆數
       const totalCount = await countQueryBuilder
         .select('COUNT(fr.id)', 'count')
         .getRawOne<CountResult>()
         .then((result) => {
-          console.log('result', result);
+          console.log('result', result)
           if (!result || !result.count) {
-            return 0;
+            return 0
           }
-          return parseInt(result.count, 10);
-        });
+          return parseInt(result.count, 10)
+        })
 
       // 添加分頁
       if (query.currentPage && query.itemCounts) {
         queryBuilder
           .offset((query.currentPage - 1) * query.itemCounts)
-          .limit(query.itemCounts);
+          .limit(query.itemCounts)
       }
 
-      const items = await queryBuilder.getRawMany<FinancialRecordRawData>();
-      console.log('items', items);
+      const items = await queryBuilder.getRawMany<FinancialRecordRawData>()
+      console.log('items', items)
       const convertedItems: FinancialRecordDetailResponseDto[] = items.map(
         (item) => {
           return new FinancialRecordDetailResponseDto({
@@ -316,9 +316,9 @@ export class FindFinancialRecordsQueryHandler
             adjustedTwdAmount: parseFloat(item.adjustedTwdAmount),
             isLocked: item.isLocked === 1,
             isDeleted: item.isDeleted === 1,
-          });
+          })
         },
-      );
+      )
 
       // 返回分頁結果
       return new Paginated({
@@ -326,10 +326,10 @@ export class FindFinancialRecordsQueryHandler
         count: totalCount,
         itemCounts: query.itemCounts,
         currentPage: query.currentPage,
-      });
+      })
     } catch (error) {
-      console.error('Error in execute:', error);
-      throw error;
+      console.error('Error in execute:', error)
+      throw error
     }
   }
 }

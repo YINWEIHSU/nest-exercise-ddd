@@ -1,12 +1,12 @@
-import { Body, Controller, HttpStatus, Param, Patch } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { routesV1 } from '@src/config/appRoutes';
-import { ApiErrorResponse } from '@src/libs/api/api-error.response';
-import { CurrentUser } from '@src/libs/decorators/user.decorator';
-import { FinancialRecordResponseDto } from '../../dtos/financialRecordResponseDto';
-import { UpdateFinancialRecordsVoucherCommand } from './updateFinancialRecordsIVoucherCommand';
-import { UpdateFinancialRecordsVoucherRequestDto } from './updateFinancialRecordsVoucherRequestDto';
+import { Body, Controller, HttpStatus, Param, Patch } from '@nestjs/common'
+import { CommandBus } from '@nestjs/cqrs'
+import { ApiOperation, ApiResponse } from '@nestjs/swagger'
+import { routesV1 } from '@src/config/appRoutes'
+import { ApiErrorResponse } from '@src/libs/api/api-error.response'
+import { CurrentUser } from '@src/libs/decorators/user.decorator'
+import { FinancialRecordResponseDto } from '../../dtos/financialRecordResponseDto'
+import { UpdateFinancialRecordsVoucherCommand } from './updateFinancialRecordsIVoucherCommand'
+import { UpdateFinancialRecordsVoucherRequestDto } from './updateFinancialRecordsVoucherRequestDto'
 
 @Controller(routesV1.version)
 export class UpdateFinancialRecordsVoucherHttpController {
@@ -32,10 +32,10 @@ export class UpdateFinancialRecordsVoucherHttpController {
         userId,
         timestamp: Date.now(),
       },
-    });
+    })
     const result: Partial<UpdateFinancialRecordsVoucherRequestDto> =
-      await this.commandBus.execute(command);
+      await this.commandBus.execute(command)
 
-    return result;
+    return result
   }
 }

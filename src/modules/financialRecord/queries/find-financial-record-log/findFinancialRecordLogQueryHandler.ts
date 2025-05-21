@@ -1,17 +1,17 @@
-import { QueryBase } from '@libs/ddd/query.base';
-import { Inject } from '@nestjs/common';
-import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
+import { QueryBase } from '@libs/ddd/query.base'
+import { Inject } from '@nestjs/common'
+import { IQueryHandler, QueryHandler } from '@nestjs/cqrs'
 
-import { Nullable } from '@libs/types';
-import { DataSource } from 'typeorm';
-import { FinancialRecordLogWithUserName } from '../../domain/financialRecordTypes';
+import { Nullable } from '@libs/types'
+import { DataSource } from 'typeorm'
+import { FinancialRecordLogWithUserName } from '../../domain/financialRecordTypes'
 
 export class FindFinancialRecordLogQuery extends QueryBase {
-  readonly id: string;
+  readonly id: string
 
   constructor(props: FindFinancialRecordLogQuery) {
-    super();
-    this.id = props.id;
+    super()
+    this.id = props.id
   }
 }
 
@@ -46,7 +46,7 @@ export class FindFinancialRecordLogQueryHandler
         'user_name',
       )
       .orderBy('frl.created_at', 'DESC')
-      .getRawMany();
+      .getRawMany()
     //需要將logs裡values中的id轉換成對應的名稱,故需要查詢對應的資料表
     const [
       applicationForms,
@@ -84,24 +84,24 @@ export class FindFinancialRecordLogQueryHandler
         .select(['sub.id AS id', 'sub.name AS name'])
         .from('subsidiaries', 'sub')
         .getRawMany(),
-    ]);
+    ])
 
     // 轉換成 { id: name } 的對應 Map,方便查詢
     const applicationFormMap = Object.fromEntries(
       applicationForms.map((i) => [i.id, i.name]),
-    );
+    )
     const counterpartyMap = Object.fromEntries(
       counterparties.map((i) => [i.id, i.name]),
-    );
+    )
     const mainAccountMap = Object.fromEntries(
       mainAccounts.map((i) => [i.id, i.name]),
-    );
+    )
     const subAccountMap = Object.fromEntries(
       subAccounts.map((i) => [i.id, i.name]),
-    );
+    )
     const subsidiaryMap = Object.fromEntries(
       subsidiaries.map((i) => [i.id, i.name]),
-    );
+    )
 
     return {
       logs,
@@ -112,6 +112,6 @@ export class FindFinancialRecordLogQueryHandler
         subAccountMap,
         subsidiaryMap,
       },
-    };
+    }
   }
 }

@@ -32,7 +32,7 @@ export abstract class AggregateRoot<EntityProps> extends Entity<EntityProps> {
             this.id
           }`,
         )
-        return eventEmitter.emitAsync(event.constructor.name, event)
+        return await eventEmitter.emitAsync(event.constructor.name, event)
       }),
     )
     this.clearEvents()

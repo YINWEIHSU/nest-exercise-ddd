@@ -1,12 +1,12 @@
-import { Body, Controller, HttpStatus, Param, Patch } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { routesV1 } from '@src/config/appRoutes';
-import { ApiErrorResponse } from '@src/libs/api/api-error.response';
-import { CurrentUser } from '@src/libs/decorators/user.decorator';
-import { FinancialRecordResponseDto } from '../../dtos/financialRecordResponseDto';
-import { UpdateFinancialRecordCommand } from './updateFinancialRecordCommand';
-import { UpdateFinancialRecordRequestDto } from './updateFinancialRecordRequestDto';
+import { Body, Controller, HttpStatus, Param, Patch } from '@nestjs/common'
+import { CommandBus } from '@nestjs/cqrs'
+import { ApiOperation, ApiResponse } from '@nestjs/swagger'
+import { routesV1 } from '@src/config/appRoutes'
+import { ApiErrorResponse } from '@src/libs/api/api-error.response'
+import { CurrentUser } from '@src/libs/decorators/user.decorator'
+import { FinancialRecordResponseDto } from '../../dtos/financialRecordResponseDto'
+import { UpdateFinancialRecordCommand } from './updateFinancialRecordCommand'
+import { UpdateFinancialRecordRequestDto } from './updateFinancialRecordRequestDto'
 
 @Controller(routesV1.version)
 export class UpdateFinancialRecordHttpController {
@@ -34,13 +34,13 @@ export class UpdateFinancialRecordHttpController {
         userId,
         timestamp: Date.now(),
       },
-    });
+    })
     const result: Partial<UpdateFinancialRecordRequestDto> =
-      await this.commandBus.execute(command);
+      await this.commandBus.execute(command)
 
     // Deciding what to do with a Result (similar to Rust matching)
     // if Ok we return a response with an id
     // if Error decide what to do with it depending on its type
-    return result;
+    return result
   }
 }
