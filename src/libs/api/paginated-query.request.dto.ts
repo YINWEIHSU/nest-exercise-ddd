@@ -1,6 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
-import { IsInt, IsOptional, Max, Min } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger'
+import { Type } from 'class-transformer'
+import { IsInt, IsOptional, Max, Min } from 'class-validator'
 
 export class PaginatedQueryRequestDto {
   @IsOptional()
@@ -13,7 +13,7 @@ export class PaginatedQueryRequestDto {
     description: 'Specifies a limit of returned records',
     required: false,
   })
-  readonly itemCounts?: number;
+  readonly itemCounts?: number
 
   @IsOptional()
   @IsInt()
@@ -21,5 +21,5 @@ export class PaginatedQueryRequestDto {
   @Max(99999)
   @Type(() => Number)
   @ApiProperty({ example: 0, description: 'Page number', required: false })
-  readonly currentPage?: number;
+  readonly currentPage?: number
 }

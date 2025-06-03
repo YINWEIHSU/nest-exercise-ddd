@@ -1,24 +1,24 @@
 import {
-  ArgumentNotProvidedException,
   ArgumentInvalidException,
+  ArgumentNotProvidedException,
   ArgumentOutOfRangeException,
-} from '../exceptions';
-import { Guard } from '../guard';
-import { convertPropsToObject } from '../utils';
+} from '../exceptions'
+import { Guard } from '../guard'
+import { convertPropsToObject } from '../utils'
 
-export type AggregateID = string;
+export type AggregateID = string
 
 export interface BaseEntityProps {
-  id: AggregateID;
-  createdAt: Date;
-  updatedAt: Date;
+  id: AggregateID
+  createdAt: Date
+  updatedAt: Date
 }
 
 export interface CreateEntityProps<T> {
-  id: AggregateID;
-  props: T;
-  createdAt?: Date;
-  updatedAt?: Date;
+  id: AggregateID
+  props: T
+  createdAt?: Date
+  updatedAt?: Date
 }
 
 export abstract class Entity<EntityProps> {
@@ -28,16 +28,16 @@ export abstract class Entity<EntityProps> {
     updatedAt,
     props,
   }: CreateEntityProps<EntityProps>) {
-    this.setId(id);
-    this.validateProps(props);
-    const now = new Date();
-    this._createdAt = createdAt || now;
-    this._updatedAt = updatedAt || now;
-    this.props = props;
-    this.validate();
+    this.setId(id)
+    this.validateProps(props)
+    const now = new Date()
+    this._createdAt = createdAt || now
+    this._updatedAt = updatedAt || now
+    this.props = props
+    this.validate()
   }
 
-  protected readonly props: EntityProps;
+  protected readonly props: EntityProps
 
   /**
    * ID is set in the concrete entity implementation to support
@@ -45,30 +45,30 @@ export abstract class Entity<EntityProps> {
    * For example it could be a UUID for aggregate root,
    * and shortid / nanoid for child entities.
    */
-  protected abstract _id: AggregateID;
+  protected abstract _id: AggregateID
 
-  private readonly _createdAt: Date;
+  private readonly _createdAt: Date
 
-  private _updatedAt: Date;
+  private _updatedAt: Date
 
   get id(): AggregateID {
-    return this._id;
+    return this._id
   }
 
   private setId(id: AggregateID): void {
-    this._id = id;
+    this._id = id
   }
 
   get createdAt(): Date {
-    return this._createdAt;
+    return this._createdAt
   }
 
   get updatedAt(): Date {
-    return this._updatedAt;
+    return this._updatedAt
   }
 
   static isEntity(entity: unknown): entity is Entity<unknown> {
-    return entity instanceof Entity;
+    return entity instanceof Entity
   }
 
   /**
@@ -77,18 +77,18 @@ export abstract class Entity<EntityProps> {
    */
   public equals(object?: Entity<EntityProps>): boolean {
     if (object === null || object === undefined) {
-      return false;
+      return false
     }
 
     if (this === object) {
-      return true;
+      return true
     }
 
     if (!Entity.isEntity(object)) {
-      return false;
+      return false
     }
 
-    return this.id ? this.id === object.id : false;
+    return this.id ? this.id === object.id : false
   }
 
   /**
@@ -102,8 +102,8 @@ export abstract class Entity<EntityProps> {
       createdAt: this._createdAt,
       updatedAt: this._updatedAt,
       ...this.props,
-    };
-    return Object.freeze(propsCopy);
+    }
+    return Object.freeze(propsCopy)
   }
 
   /**
@@ -112,15 +112,15 @@ export abstract class Entity<EntityProps> {
    * useful when logging an entity during testing/debugging
    */
   public toObject(): unknown {
-    const plainProps = convertPropsToObject(this.props);
+    const plainProps = convertPropsToObject(this.props)
 
     const result = {
       id: this._id,
       createdAt: this._createdAt,
       updatedAt: this._updatedAt,
       ...plainProps,
-    };
-    return Object.freeze(result);
+    }
+    return Object.freeze(result)
   }
 
   /**
@@ -128,23 +128,21 @@ export abstract class Entity<EntityProps> {
    * for each entity. Validate method is called every time before
    * saving an entity to the database to make sure those rules are respected.
    */
-  public abstract validate(): void;
+  public abstract validate(): void
 
   private validateProps(props: EntityProps): void {
-    const MAX_PROPS = 50;
+    const MAX_PROPS = 50
 
     if (Guard.isEmpty(props)) {
-      throw new ArgumentNotProvidedException(
-        'Entity props should not be empty',
-      );
+      throw new ArgumentNotProvidedException('Entity props should not be empty')
     }
     if (typeof props !== 'object') {
-      throw new ArgumentInvalidException('Entity props should be an object');
+      throw new ArgumentInvalidException('Entity props should be an object')
     }
     if (Object.keys(props as any).length > MAX_PROPS) {
       throw new ArgumentOutOfRangeException(
         `Entity props should not have more than ${MAX_PROPS} properties`,
-      );
+      )
     }
   }
 }

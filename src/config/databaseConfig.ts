@@ -1,5 +1,5 @@
-import { get } from 'env-var';
-import '../libs/utils/dotenv';
+import { get } from 'env-var'
+import '../libs/utils/dotenv'
 
 export const databaseConfig = {
   host: get('MYSQL_HOST').required().asString(),
@@ -7,4 +7,4 @@ export const databaseConfig = {
   username: get('MYSQL_USERNAME').required().asString(),
   password: get('MYSQL_PASSWORD').required().asString(),
   database: get('MYSQL_DATABASE').required().asString(),
-};
+}

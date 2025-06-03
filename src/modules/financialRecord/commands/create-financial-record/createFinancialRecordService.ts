@@ -1,11 +1,11 @@
-import { Money } from '../../domain/value-objects/moneyValueObject';
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { Inject } from '@nestjs/common';
-import { CreateFinancialRecordCommand } from './createFinancialRecordCommand';
-import { AggregateID } from '@libs/ddd';
-import { FinancialRecordEntity } from '../../domain/financialRecordEntity';
-import { TypeOrmFinancialRecordRepositoryAdapter } from '../../database/financialRecordRepository';
-import { FINANCIAL_RECORD_REPOSITORY } from '../../financialRecordDiTokens';
+import { AggregateID } from '@libs/ddd'
+import { Inject } from '@nestjs/common'
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
+import { TypeOrmFinancialRecordRepositoryAdapter } from '../../database/financialRecordRepository'
+import { FinancialRecordEntity } from '../../domain/financialRecordEntity'
+import { Money } from '../../domain/value-objects/moneyValueObject'
+import { FINANCIAL_RECORD_REPOSITORY } from '../../financialRecordDiTokens'
+import { CreateFinancialRecordCommand } from './createFinancialRecordCommand'
 
 @CommandHandler(CreateFinancialRecordCommand)
 export class CreateFinancialRecordService
@@ -33,15 +33,15 @@ export class CreateFinancialRecordService
       }),
       note: command.note,
       creatorId: command.metadata.userId as string,
-    });
+    })
     return await this.financialRecordRepo.transaction(async (entityManager) => {
       const id = await this.financialRecordRepo.insert(
         financialRecord,
         entityManager,
-      );
+      )
 
       // 返回聚合根 ID
-      return id.toString();
-    });
+      return id.toString()
+    })
   }
 }

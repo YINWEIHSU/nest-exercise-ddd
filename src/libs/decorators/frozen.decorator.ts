@@ -5,7 +5,7 @@
  * using 'new' keyword, only static properties and prototype
  * of a class.
  */
-export function frozen(constructor: Function): void {
-  Object.freeze(constructor);
-  Object.freeze(constructor.prototype);
+export function frozen(target: Function): void {
+  Object.freeze(target)
+  Object.freeze(target.prototype)
 }
