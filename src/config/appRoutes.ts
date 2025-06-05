@@ -6,6 +6,7 @@
 // Root
 const financialRecordRoot = 'financial-records'
 const subsidiaryRoot = 'subsidiaries'
+const applicationFormRoot = 'application-forms'
 
 // Api Versions
 const v1 = 'api/v1'
@@ -25,4 +26,8 @@ export const routesV1 = {
   subsidiary: {
     getList: subsidiaryRoot,
   },
+
+  applicationForm: {
+    getList: applicationFormRoot,
+  }
 }

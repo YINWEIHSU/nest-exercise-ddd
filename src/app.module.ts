@@ -12,6 +12,8 @@ import { TypeOrmFinancialRecordLogEntity } from './modules/financialRecord/datab
 import { FinancialRecordModule } from './modules/financialRecord/financialRecordModule'
 import { TypeOrmSubsidiaryEntity } from './modules/subsidiary/database/typeorm/typeOrmSubsidiaryEntity'
 import { subsidiaryModule } from './modules/subsidiary/subsidiaryModule'
+import { TypeOrmApplicationFormEntity } from './modules/applicationForm/database/typeorm/typeOrmApplicationFormEntity'
+import { applicationFormModule } from './modules/applicationForm/applicationFormModule'
 
 @Module({
   imports: [
@@ -26,6 +28,7 @@ import { subsidiaryModule } from './modules/subsidiary/subsidiaryModule'
         TypeOrmFinancialRecordEntity,
         TypeOrmFinancialRecordLogEntity,
         TypeOrmSubsidiaryEntity,
+        TypeOrmApplicationFormEntity
       ],
       synchronize: false,
     }),
@@ -35,6 +38,7 @@ import { subsidiaryModule } from './modules/subsidiary/subsidiaryModule'
     RequestContextModule,
     FinancialRecordModule,
     subsidiaryModule,
+    applicationFormModule
   ],
   controllers: [],
   providers: [
@@ -45,4 +49,4 @@ import { subsidiaryModule } from './modules/subsidiary/subsidiaryModule'
     AuthGuard,
   ],
 })
-export class AppModule {}
+export class AppModule { }
