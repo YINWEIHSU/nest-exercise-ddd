@@ -10,6 +10,8 @@ import { AuthGuard } from './libs/guards/authGuard'
 import { TypeOrmFinancialRecordEntity } from './modules/financialRecord/database/typeorm/typeOrmFinancialRecordEntity'
 import { TypeOrmFinancialRecordLogEntity } from './modules/financialRecord/database/typeorm/typeOrmFinancialRecordLogEntity'
 import { FinancialRecordModule } from './modules/financialRecord/financialRecordModule'
+import { TypeOrmSubsidiaryEntity } from './modules/subsidiary/database/typeorm/typeOrmSubsidiaryEntity'
+import { subsidiaryModule } from './modules/subsidiary/subsidiaryModule'
 
 @Module({
   imports: [
@@ -20,7 +22,11 @@ import { FinancialRecordModule } from './modules/financialRecord/financialRecord
       username: databaseConfig.username,
       password: databaseConfig.password,
       database: databaseConfig.database,
-      entities: [TypeOrmFinancialRecordEntity, TypeOrmFinancialRecordLogEntity],
+      entities: [
+        TypeOrmFinancialRecordEntity,
+        TypeOrmFinancialRecordLogEntity,
+        TypeOrmSubsidiaryEntity,
+      ],
       synchronize: false,
     }),
     AuthModule,
@@ -28,6 +34,7 @@ import { FinancialRecordModule } from './modules/financialRecord/financialRecord
     EventEmitterModule.forRoot(),
     RequestContextModule,
     FinancialRecordModule,
+    subsidiaryModule,
   ],
   controllers: [],
   providers: [

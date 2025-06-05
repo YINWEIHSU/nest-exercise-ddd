@@ -5,6 +5,7 @@
 
 // Root
 const financialRecordRoot = 'financial-records'
+const subsidiaryRoot = 'subsidiaries'
 
 // Api Versions
 const v1 = 'api/v1'
@@ -19,5 +20,9 @@ export const routesV1 = {
     lock: `${financialRecordRoot}/lock`,
     invoice: `${financialRecordRoot}/invoice-info`,
     voucher: `${financialRecordRoot}/voucher-number`,
+  },
+
+  subsidiary: {
+    getList: subsidiaryRoot,
   },
 }
