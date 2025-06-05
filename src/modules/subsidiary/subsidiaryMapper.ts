@@ -13,30 +13,25 @@ import { SubsidiaryEntity } from './domain/subsidiaryEntity'
 
 @Injectable()
 export class SubsidiaryMapper
-  implements Mapper<SubsidiaryEntity, TypeOrmSubsidiaryEntity>
-{
-  toPersistence(entity: SubsidiaryEntity): TypeOrmSubsidiaryEntity {
-    const copy = entity.getProps()
-    const subsidiary: TypeOrmSubsidiaryEntity = {
-      id: parseInt(copy.id),
-      name: copy.name,
-      is_enable: copy.isEnable,
-      created_at: copy.createdAt,
-      updated_at: copy.updatedAt,
+    implements Mapper<SubsidiaryEntity, TypeOrmSubsidiaryEntity> {
+    toPersistence(entity: SubsidiaryEntity): TypeOrmSubsidiaryEntity {
+        const copy = entity.getProps()
+        const subsidiary: TypeOrmSubsidiaryEntity = {
+            id: parseInt(copy.id),
+            name: copy.name,
+            is_enable: copy.isEnable,
+        }
+        return subsidiary
     }
-    return subsidiary
-  }
 
-  toDomain(subsidiary: TypeOrmSubsidiaryEntity): SubsidiaryEntity {
-    const entity = new SubsidiaryEntity({
-      id: subsidiary.id.toString(),
-      createdAt: subsidiary.created_at,
-      updatedAt: subsidiary.updated_at,
-      props: {
-        name: subsidiary.name,
-        isEnable: subsidiary.is_enable,
-      },
-    })
-    return entity
-  }
+    toDomain(subsidiary: TypeOrmSubsidiaryEntity): SubsidiaryEntity {
+        const entity = new SubsidiaryEntity({
+            id: subsidiary.id.toString(),
+            props: {
+                name: subsidiary.name,
+                isEnable: subsidiary.is_enable,
+            },
+        })
+        return entity
+    }
 }

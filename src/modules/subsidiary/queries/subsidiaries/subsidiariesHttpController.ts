@@ -8,21 +8,21 @@ import { SubsidiariesQuery } from './subsidiariesQueryHandler'
 
 @Controller(routesV1.version)
 export class SubsidiariesHttpController {
-  constructor(private readonly queryBus: QueryBus) {}
+    constructor(private readonly queryBus: QueryBus) { }
 
-  @Get(routesV1.subsidiary.getList)
-  @ApiOperation({ summary: 'subsidiares list' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: SubsidiaryResponseDto,
-  })
-  async subsidiaries(): Promise<any> {
-    const query = new SubsidiariesQuery()
-    const subsidiaries: TypeOrmSubsidiaryEntity[] =
-      await this.queryBus.execute(query)
-    const data = subsidiaries.map(
-      (subsidiary) => new SubsidiaryResponseDto(subsidiary),
-    )
-    return { data }
-  }
+    @Get(routesV1.subsidiary.getList)
+    @ApiOperation({ summary: 'subsidiares list' })
+    @ApiResponse({
+        status: HttpStatus.OK,
+        type: SubsidiaryResponseDto,
+    })
+    async subsidiaries(): Promise<any> {
+        const query = new SubsidiariesQuery()
+        const subsidiaries: TypeOrmSubsidiaryEntity[] =
+            await this.queryBus.execute(query)
+        const data = subsidiaries.map(
+            (subsidiary) => new SubsidiaryResponseDto(subsidiary),
+        )
+        return { data }
+    }
 }
