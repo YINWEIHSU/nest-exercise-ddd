@@ -5,6 +5,8 @@
 
 // Root
 const financialRecordRoot = 'financial-records'
+const mainAccountRoot = 'main-accounts'
+const subAccountRoot = 'sub-accounts'
 
 // Api Versions
 const v1 = 'api/v1'
@@ -19,5 +21,13 @@ export const routesV1 = {
     lock: `${financialRecordRoot}/lock`,
     invoice: `${financialRecordRoot}/invoice-info`,
     voucher: `${financialRecordRoot}/voucher-number`,
+  },
+  mainAccount: {
+    root: mainAccountRoot,
+    getList: `${mainAccountRoot}`,
+  },
+  subAccount: {
+    root: subAccountRoot,
+    getList: `${subAccountRoot}`,
   },
 }

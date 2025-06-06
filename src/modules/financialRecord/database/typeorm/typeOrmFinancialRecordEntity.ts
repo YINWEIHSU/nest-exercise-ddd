@@ -1,16 +1,15 @@
 import { TransactionType } from '@libs/enums/transactionTypeEnums'
+import { TypeOrmSubAccountEntity } from '@src/modules/accounting/database/typeorm/typeOrmSubAccountEntity'
 import * as dayjs from 'dayjs'
 import {
   Column,
-  // ManyToOne,
-  // JoinColumn,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
-// import { SubAccount } from '../../accounting/entities/sub-account.entity';
-// import { Subsidiary } from '../../subsidiary/entities/subsidiary.entity';
 
 @Entity({ name: 'financial_records' })
 export class TypeOrmFinancialRecordEntity {
@@ -182,12 +181,7 @@ export class TypeOrmFinancialRecordEntity {
   @UpdateDateColumn()
   public updated_at: Date
 
-  // 關聯
-  // @ManyToOne(() => SubAccount)
-  // @JoinColumn({ name: 'sub_account_id' })
-  // public sub_account?: SubAccount;
-
-  // @ManyToOne(() => Subsidiary)
-  // @JoinColumn({ name: 'subsidiary_id' })
-  // public subsidiary?: Subsidiary;
+  @ManyToOne(() => TypeOrmSubAccountEntity)
+  @JoinColumn({ name: 'sub_account_id' })
+  public sub_account?: TypeOrmSubAccountEntity
 }

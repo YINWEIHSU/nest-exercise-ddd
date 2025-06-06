@@ -7,6 +7,7 @@ import { RequestContextModule } from 'nestjs-request-context'
 import { databaseConfig } from './config/databaseConfig'
 import { AuthModule } from './libs/externalServices/auth/authModule'
 import { AuthGuard } from './libs/guards/authGuard'
+import { AccountingModule } from './modules/accounting/accountingModule'
 import { TypeOrmFinancialRecordEntity } from './modules/financialRecord/database/typeorm/typeOrmFinancialRecordEntity'
 import { TypeOrmFinancialRecordLogEntity } from './modules/financialRecord/database/typeorm/typeOrmFinancialRecordLogEntity'
 import { FinancialRecordModule } from './modules/financialRecord/financialRecordModule'
@@ -28,6 +29,7 @@ import { FinancialRecordModule } from './modules/financialRecord/financialRecord
     EventEmitterModule.forRoot(),
     RequestContextModule,
     FinancialRecordModule,
+    AccountingModule,
   ],
   controllers: [],
   providers: [
