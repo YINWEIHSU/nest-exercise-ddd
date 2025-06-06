@@ -20,6 +20,8 @@ export class CounterpartyMapper
             name: copy.name,
             is_enable: copy.isEnable,
             type: copy.type, // Make sure 'type' exists in copy
+            identity_number: copy.identityNumber,
+            address: copy.address,
             created_at: copy.createdAt ?? new Date(), // Provide a default if not present
             updated_at: copy.updatedAt ?? new Date(), // Provide a default if not present
         }
@@ -33,8 +35,6 @@ export class CounterpartyMapper
                 name: counterparty.name,
                 isEnable: counterparty.is_enable,
                 type: counterparty.type,
-                createdAt: counterparty.created_at,
-                updatedAt: counterparty.updated_at,
             },
         })
         return entity

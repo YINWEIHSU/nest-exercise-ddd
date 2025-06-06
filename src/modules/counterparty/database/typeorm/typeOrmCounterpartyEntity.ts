@@ -4,6 +4,7 @@ import { CounterpartyType } from '@libs/enums/counterpartyEnums'
 
 @Entity({ name: 'counterparties' })
 export class TypeOrmCounterpartyEntity {
+  [key: string]: unknown
   @PrimaryGeneratedColumn()
   id: number;
 

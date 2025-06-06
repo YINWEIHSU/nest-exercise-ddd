@@ -1,7 +1,9 @@
 import { AggregateID, AggregateRoot } from '@libs/ddd'
+import { randomUUID } from 'crypto'
 import { CreateEntityProps } from '@libs/ddd/entity.base'
 import { CounterpartyType } from '@libs/enums/counterpartyEnums'
-import { CounterpartyProps } from './counterpartyTypes'
+import { CounterpartyProps, CreateCounterpartyProps } from './counterpartyTypes'
+
 
 export class CounterpartyEntity extends AggregateRoot<CounterpartyProps> {
   protected _id: AggregateID
@@ -9,6 +11,19 @@ export class CounterpartyEntity extends AggregateRoot<CounterpartyProps> {
   constructor(props: CreateEntityProps<CounterpartyProps>) {
     super(props)
     this._id = props.id
+  }
+
+  static create(create: CreateCounterpartyProps): CounterpartyEntity {
+    const id = randomUUID()
+    const props: CounterpartyProps = {
+      type: create.type,
+      name: create.name,
+      identityNumber: create.identificationNumber,
+      address: create.address,
+      isEnable: true,
+    }
+    const counterparty = new CounterpartyEntity({ id, props })
+    return counterparty
   }
 
   get id(): string {
@@ -33,14 +48,6 @@ export class CounterpartyEntity extends AggregateRoot<CounterpartyProps> {
 
   get isEnable(): boolean {
     return this.props.isEnable
-  }
-
-  get createdAt(): Date {
-    return this.props.createdAt
-  }
-
-  get updatedAt(): Date {
-    return this.props.updatedAt
   }
 
   validate(): void {

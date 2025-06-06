@@ -33,6 +33,7 @@ export const routesV1 = {
   },
 
   counterparty: {
+    root: counterpartyRoot,
     getList: counterpartyRoot,
   }
 }

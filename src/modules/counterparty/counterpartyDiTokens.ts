@@ -1,2 +1,5 @@
 // Tokens used for Dependency Injection
 export const COUNTERPARTY_QUERY_REPOSITORY = Symbol('COUNTERPARTY_QUERY_REPOSITORY')
+
+export const COUNTERPARTY_REPOSITORY = Symbol('COUNTERPARTY_REPOSITORY')
+

@@ -6,8 +6,13 @@ export interface CounterpartyProps {
     identityNumber?: string
     address?: string
     isEnable: boolean
-    createdAt: Date
-    updatedAt: Date
+}
+export interface CreateCounterpartyProps {
+    id?: string
+    type: CounterpartyType
+    name: string
+    identificationNumber?: string
+    address?: string
 }
 
 
