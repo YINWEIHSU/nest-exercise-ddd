@@ -23,13 +23,4 @@ export class TypeOrmFinancialRecordRepositoryQueryAdapter {
     })
     return entity ? entity : null
   }
-
-  public async findAll(
-    id: string,
-  ): Promise<Nullable<TypeOrmFinancialRecordEntity>> {
-    const entity = await this.repository.findOne({
-      where: { id: Number(id) },
-    })
-    return entity ? entity : null
-  }
 }

@@ -7,6 +7,7 @@ import { RequestContextModule } from 'nestjs-request-context'
 import { databaseConfig } from './config/databaseConfig'
 import { AuthModule } from './libs/externalServices/auth/authModule'
 import { AuthGuard } from './libs/guards/authGuard'
+import { AccountingModule } from './modules/accounting/accountingModule'
 import { TypeOrmFinancialRecordEntity } from './modules/financialRecord/database/typeorm/typeOrmFinancialRecordEntity'
 import { TypeOrmFinancialRecordLogEntity } from './modules/financialRecord/database/typeorm/typeOrmFinancialRecordLogEntity'
 import { FinancialRecordModule } from './modules/financialRecord/financialRecordModule'
@@ -16,6 +17,8 @@ import { TypeOrmApplicationFormEntity } from './modules/applicationForm/database
 import { applicationFormModule } from './modules/applicationForm/applicationFormModule'
 import { TypeOrmCounterpartyEntity } from './modules/counterparty/database/typeorm/typeOrmCounterpartyEntity'
 import { counterpartyModule } from './modules/counterparty/counterpartyModule'
+import { TypeOrmMainAccountEntity } from './modules/accounting/database/typeorm/typeOrmMainAccountEntity'
+import { TypeOrmSubAccountEntity } from './modules/accounting/database/typeorm/typeOrmSubAccountEntity'
 
 @Module({
   imports: [
@@ -31,7 +34,9 @@ import { counterpartyModule } from './modules/counterparty/counterpartyModule'
         TypeOrmFinancialRecordLogEntity,
         TypeOrmSubsidiaryEntity,
         TypeOrmApplicationFormEntity,
-        TypeOrmCounterpartyEntity
+        TypeOrmCounterpartyEntity,
+        TypeOrmMainAccountEntity,
+        TypeOrmSubAccountEntity
       ],
       synchronize: false,
     }),
@@ -42,7 +47,8 @@ import { counterpartyModule } from './modules/counterparty/counterpartyModule'
     FinancialRecordModule,
     subsidiaryModule,
     applicationFormModule,
-    counterpartyModule
+    counterpartyModule,
+    AccountingModule,
   ],
   controllers: [],
   providers: [

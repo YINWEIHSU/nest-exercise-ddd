@@ -8,6 +8,8 @@ const financialRecordRoot = 'financial-records'
 const subsidiaryRoot = 'subsidiaries'
 const applicationFormRoot = 'application-forms'
 const counterpartyRoot = 'counterparties'
+const mainAccountRoot = 'main-accounts'
+const subAccountRoot = 'sub-accounts'
 
 // Api Versions
 const v1 = 'api/v1'
@@ -35,5 +37,14 @@ export const routesV1 = {
   counterparty: {
     root: counterpartyRoot,
     getList: counterpartyRoot,
-  }
+  },
+
+  mainAccount: {
+    root: mainAccountRoot,
+    getList: `${mainAccountRoot}`,
+  },
+  subAccount: {
+    root: subAccountRoot,
+    getList: `${subAccountRoot}`,
+  },
 }
