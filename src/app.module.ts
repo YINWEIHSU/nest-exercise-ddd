@@ -14,6 +14,8 @@ import { TypeOrmSubsidiaryEntity } from './modules/subsidiary/database/typeorm/t
 import { subsidiaryModule } from './modules/subsidiary/subsidiaryModule'
 import { TypeOrmApplicationFormEntity } from './modules/applicationForm/database/typeorm/typeOrmApplicationFormEntity'
 import { applicationFormModule } from './modules/applicationForm/applicationFormModule'
+import { TypeOrmCounterpartyEntity } from './modules/counterparty/database/typeorm/typeOrmCounterpartyEntity'
+import { counterpartyModule } from './modules/counterparty/counterpartyModule'
 
 @Module({
   imports: [
@@ -28,7 +30,8 @@ import { applicationFormModule } from './modules/applicationForm/applicationForm
         TypeOrmFinancialRecordEntity,
         TypeOrmFinancialRecordLogEntity,
         TypeOrmSubsidiaryEntity,
-        TypeOrmApplicationFormEntity
+        TypeOrmApplicationFormEntity,
+        TypeOrmCounterpartyEntity
       ],
       synchronize: false,
     }),
@@ -38,7 +41,8 @@ import { applicationFormModule } from './modules/applicationForm/applicationForm
     RequestContextModule,
     FinancialRecordModule,
     subsidiaryModule,
-    applicationFormModule
+    applicationFormModule,
+    counterpartyModule
   ],
   controllers: [],
   providers: [

@@ -16,12 +16,10 @@ export class ApplicationFormsHttpController {
     status: HttpStatus.OK,
     type: ApplicationFormResponseDto,
   })
-  async applicationforms(): Promise<any> {
+  async applicationforms(): Promise<{ data: ApplicationFormResponseDto[] }> {
     const query = new ApplicationFormsQuery()
-    console.log('query', query)
     const applicationForms: TypeOrmApplicationFormEntity[] =
       await this.queryBus.execute(query)
-    console.log('applicationForms', applicationForms)
     const data = applicationForms.map(
       (applicationForm) => new ApplicationFormResponseDto(applicationForm),
     )

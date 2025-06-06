@@ -7,6 +7,7 @@
 const financialRecordRoot = 'financial-records'
 const subsidiaryRoot = 'subsidiaries'
 const applicationFormRoot = 'application-forms'
+const counterpartyRoot = 'counterparties'
 
 // Api Versions
 const v1 = 'api/v1'
@@ -29,5 +30,9 @@ export const routesV1 = {
 
   applicationForm: {
     getList: applicationFormRoot,
+  },
+
+  counterparty: {
+    getList: counterpartyRoot,
   }
 }
